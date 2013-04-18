@@ -19,7 +19,7 @@
 
 \begin{frame}
   \frametitle{Outline}
-  \tableofcontents
+  \tableofcontents[currentsection,currentsubsection]
 \end{frame}
 
 % These frametitles are kinda tongue-in-cheek, not sure if I want to keep them -- Erik
@@ -29,27 +29,82 @@
 
 \begin{frame}
     \frametitle{What are we dealing with?}
-    /* General definitions, explanations on cloud computing: SaaS/PaaS/IaaS
-    (with a picture?), public/private/community/hybrid clouds  */
+    %/* General definitions, explanations on cloud computing: SaaS/PaaS/IaaS
+    %(with a picture?), public/private/community/hybrid clouds  */
+    \begin{itemize}	
+    \item \small Software as a Service (SaaS)
+      \scriptsize{Webmail, online storage, social media}
+    \item \small Platform as a Service (PaaS)
+      \scriptsize{Virtual application platforms}
+    \item \small Infrastructure as a Service (IaaS)
+      \scriptsize{Scalable computing and storage services}
+    \end{itemize}
+    /* Network as a service */
 \end{frame}
 
 \begin{frame}
-    \frametitle{Why your manager likes it?}
-    /* Why use cloud computing at all; virtualization, scaling, fast
-    deployment, pay-for-use, etc  */
+    \frametitle{Who are we dealing with?}
+    Roles:
+    \begin{itemize} % We might put this in a pyramid diagram
+      \item Cloud service providers that offer ?aaS
+      \item Cloud service users that build services on that
+      \item Customers of these services
+    \end{itemize}
+
+    Cloud Service providers:
+    \begin{itemize}	
+    \item \small SaaS
+      \scriptsize{Google, Apple, Microsoft}
+    \item \small PaaS
+      \scriptsize{Google AppEngine, Amazon AWS, EngineYard, Heroku}
+    \item \small IaaS
+      \scriptsize{Amazon EC3/S3, Linode}
+    \end{itemize}
+
+    % Cloud service users: some sites you use, customers: you
 \end{frame}
 
 \begin{frame}
-    \frametitle{Why Bruce Schneier has his doubts?}
-    /* What are the problems; general overview of the security requirements and
-    problems (depending on type of cloud); picture(s) about cloud security for
-    fun and profit */
+    \frametitle{Why does the industry like it?}
+    %/* Why use cloud computing at all; virtualization, scaling, fast
+    %deployment, pay-for-use, etc  */
+    \begin{itemize}	
+    \item Cost
+    \item Fast wide scalability
+    \item Pay as you go
+    \item Outsource responsibility
+    \item Buzz
+    \end{itemize}
 \end{frame}
 
 \begin{frame}
-    \frametitle{Why your data might not like it?}
-    /* Global overview on pecific privacy concerns w.r.t. clouds; example(s)
-    of how things can go badly; primarily: why does it matter! */
+    \frametitle{Why should we be skeptical?}
+    %/* What are the problems; general overview of the security requirements and
+    %problems (depending on type of cloud); picture(s) about cloud security for
+    %fun and profit */
+    \begin{itemize}	
+      \item Centralized assets
+      \item Less diversity
+      \item Shared environment
+      \item Logical segregation
+      \item Usually has better security
+      \item Major impact when breaches do occur
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Might your data be in peril?}
+    %/* Global overview on specific privacy concerns w.r.t. clouds; example(s)
+    %of how things can go badly; primarily: why does it matter! */
+    \begin{itemize}	
+      \item ``Real name policy''
+      \item Data ownership
+      \item Local legislation % For example: age of consent in various countries - flickr picture legal one place, illegal in another
+      %\item Piracy claims vs Fair use % (YouTube knows about that song you ripped off and is obliged to tell the authorities)
+      \item The declining cost of storing \textbf{everything}
+      \item SLAs
+      \item \dots
+    \end{itemize}
 \end{frame}
 
 \section{Legal aspects}
@@ -59,12 +114,31 @@
     \frametitle{Because a little reminder is always nice}
     /* Quick recap of the most important and relevant legislation, i.e., data
     protection and privacy directives. */
+    \begin{itemize}	
+    \item EU Data protection directive 95/46/EC
+    \item \dots
+    \end{itemize}
 \end{frame}
 
 \begin{frame}
     \frametitle{As always: "it depends"}
     /* Legal analysis differs given the type of cloud computing (so break it
     down); SLAs should be explained here (if not earlier) */
+    % Erik, ik weet niet welke kant je hiermee op wilt - laat ik aan jou over
+\end{frame}
+
+\begin{frame}
+    \frametitle{Service Level Agreements (SLAs)}
+    \begin{itemize}
+    \item Contract law
+    \item May require you to:
+      \begin{itemize} % http://www.networkworld.com/news/2012/120612-hp-amazon-cloud-264847.html?page=2
+        \item occupy two mirrored instances at different datacenters
+        \item may allow one of these to go down at points
+        \item may give different guarantees for different aspects
+      \end{itemize}
+    \item ...
+    \end{itemize}
 \end{frame}
 
 \begin{frame}
@@ -78,26 +152,123 @@
     bits and pieces? */
 \end{frame}
 
+% Perhaps this is a good one to encite a discussion
+\begin{frame}
+    \frametitle{Strategic defense consideration}
+    \begin{itemize}
+      \item Large concentrations of valuable data
+      \item hosted on shared infrastructure
+      \item (with a broad and deep attack surface)
+      \item on a platform that offers tremendous computing capacity
+      \item to anybody with a credit card
+    \end{itemize}
+\end{frame}
+
 \section{Technical aspects}
+\begin{frame}
+    \frametitle{To trust or not to trust}
+    %/* In-depth technical privacy in cloud setting; What does privacy mean in
+    %this context, how can it be achieved (in general): all sorts of things are involved
+    %(network security, web security, encryption, computing under encryption,
+    %etc) */
+
+    Availability: \checkmark \\
+    Focus on:
+    \begin{itemize}
+      \item Confidentiality
+      \item Integrity
+    \end{itemize}
+    We apply:
+    \begin{itemize} % Note these are ordered from the most ephemeral to the most real
+      \item Identity management
+      \item Application security
+      \item System \& Network security
+      \item Physical security
+      \item Hypervisor security
+    \end{itemize}
+\end{frame}
 
 \begin{frame}
-    \frametitle{To trust of not to trust}
-    /* In-depth technical privacy in cloud setting; What does privacy mean in
-    this context, how can it be achieved (in general): all sorts of things are involved
-    (network security, web security, encryption, computing under encryption,
-    etc) */
+    \frametitle{Identity management}
+    Prevent identity fraud:
+    \begin{itemize}
+      \item Single sign-on (SSO) % Maybe not this... but it's related
+      \item Multi-factor authentication
+      \item Password policies, security questions
+      %\item SSL validity
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Application security}
+    Prevent software abuse:
+    \begin{itemize}
+      \item Input validation
+      \item Secure storage
+      \item Avoid logical bugs
+      \item Audit logging
+      \item Application software patches
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{System \& Network Security}
+    Prevent network abuse:
+    \begin{itemize}
+      \item Firewalling
+      \item Secure tunnels % Maybe skip this
+      \item Airgapped management network
+      \item Central audit logging
+      \item Intrusion detection services (IDS)
+      \item System software patches (fabric management)
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Physical Security}
+    Prevent physical entry:
+    \begin{itemize}
+      \item Fences
+      \item Locks
+      \item Guards
+      \item Cameras
+      \item Badges \& Secure doors
+      \item Electrically safe fire extinguishers (inert gas)
+      \item Redundant power, backup power
+      \item Redundant cooling water
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Hypervisor security}
+    Prevent breaking out of virtual machines:
+    \begin{itemize}
+      \item Fabric management
+      \item Host-based intrusion detection
+      \item \dots
+    \end{itemize}
 \end{frame}
 
 \begin{frame}
     \frametitle{The best defense is a good\dots}
     /* Attacks, attacks and more attacks; If possible, frighten the audience!
     Malicious images, simple(r) web application vulnerabilities, etc */
+    \begin{itemize}
+      \item Poisoning the well (Harron Meer, 2009)
+      \item Cracking in the cloud (Various) % TODO cite
+      \item Gigabit DDoS as a service % 250Mbit/s per node!
+      \item Linode hack
+    \end{itemize}
 \end{frame}
 
 \begin{frame}
     \frametitle{The best offense is a good\dots}
     /* Countermeasures; PETs; best practices; more detailed explanations of
     systems that give privacy guarantees */
+    \begin{itemize}
+      \item Only store encrypted data and let the client encrypt it on their machine
+      \item Don't log sensitive data
+    \end{itemize}
 \end{frame}
 
 \begin{frame}
