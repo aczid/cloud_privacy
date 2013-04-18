@@ -63,7 +63,7 @@
     \item \small PaaS
       \scriptsize{Google AppEngine, Amazon AWS, EngineYard, Heroku}
     \item \small IaaS
-      \scriptsize{Amazon EC3/S3, Linode}
+      \scriptsize{Amazon EC2/S3, Linode}
     \end{itemize}
 
     % Cloud service users: some sites you use, customers: you
@@ -133,7 +133,8 @@
 \begin{frame}
     \frametitle{As always: "it depends"}
     /* Legal analysis differs given the type of cloud computing (so break it
-    down); SLAs should be explained here (if not earlier) */
+    down), it matters whether we have public or private clouds, IaaS or SaaS,
+    etc. */
     % Erik, ik weet niet welke kant je hiermee op wilt - laat ik aan jou over
 \end{frame}
 
@@ -156,13 +157,8 @@
     /* If we do manage to find relevant case law, put it here */
 \end{frame}
 
-\begin{frame}
-    \frametitle{Reinventing the wheel}
-    /* Some room for discussion: how does our audience feel about the legal
-    bits and pieces? */
-\end{frame}
-
 % Perhaps this is a good one to encite a discussion
+% Sure, so I've moved the discussion slide after this one
 \begin{frame}
     \frametitle{Strategic defense consideration}
     \begin{itemize}
@@ -172,6 +168,12 @@
       \item on a platform that offers tremendous computing capacity
       \item to anybody with a credit card
     \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Reinventing the wheel}
+    /* Some room for discussion: how does our audience feel about the legal
+    bits and pieces? */
 \end{frame}
 
 \section{Technical aspects}
@@ -200,7 +202,7 @@
       \item Application security
       \item System \& Network security
       \item Physical security
-      \item Hypervisor security
+      \item Hypervisor security % Isn't physical security arguably more 'real' than hypervisor security?
     \end{itemize}
 \end{frame}
 
