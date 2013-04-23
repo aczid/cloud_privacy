@@ -61,9 +61,9 @@
     \item \small SaaS
       \scriptsize{Google, Apple, Microsoft}
     \item \small PaaS
-      \scriptsize{Google AppEngine, Amazon AWS, EngineYard, Heroku}
+      \scriptsize{Google AppEngine, Amazon AWS, Microsoft Azure (SQL), EngineYard, Heroku}
     \item \small IaaS
-      \scriptsize{Amazon EC2/S3, Linode}
+      \scriptsize{Amazon EC2 / S3, Google Compute Engine / BigQuery, Linode}
     \end{itemize}
 
     % Cloud service users: some sites you use, customers: you
@@ -112,6 +112,22 @@
     \end{itemize}
 \end{frame}
 
+\begin{frame}
+    \frametitle{Provider viewpoints}
+    \begin{itemize}
+    \item Google: ``Onze menukaart is beperkt, maar je kunt toch weg? Dan moet je verder niet zeiken'' (``Google weigert data in Europa te houden'' - Webwereld, 2011)
+    \item Microsoft: ``Microsoft cannot provide those guarantees. Neither can any other company'' (``Microsoft admits Patriot Act can access EU-based cloud data'' - ZDnet, 2011)
+    \item Amazon: ``Customers can choose to store all data in the EU by using the EU (Ireland) Amazon S3 Region.'' (Amazon S3 FAQ)
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Data locations}
+    \begin{itemize}
+    \item OV chipkaart: Talys, France
+    \end{itemize}
+\end{frame}
+
 \section{Legal aspects}
 % Another 20 minutes should be doable
 
@@ -122,12 +138,30 @@
 
 \begin{frame}
     \frametitle{Because a little reminder is always nice}
-    /* Quick recap of the most important and relevant legislation, i.e., data
-    protection and privacy directives. */
+    %/* Quick recap of the most important and relevant legislation, i.e., data
+    %protection and privacy directives. */
     \begin{itemize}	
     \item EU Data protection directive 95/46/EC
+    \item Safe Harbor principle
+    \item PATRIOT act
     \item \dots
     \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Safe harbor principle}
+    \begin{scriptsize}
+    \begin{itemize}
+    \item \textbf{Notice} - Individuals must be informed that their data is being collected and about how it will be used.
+    \item \textbf{Choice} - Individuals must have the ability to opt out of the collection and forward transfer of the data to third parties.
+    \item \textbf{Onward Transfer} - Transfers of data to third parties may only occur to other organizations that follow adequate data protection principles.
+    \item \textbf{Security} - Reasonable efforts must be made to prevent loss of collected information.
+    \item \textbf{Data Integrity} - Data must be relevant and reliable for the purpose it was collected for.
+    \item \textbf{Access} - Individuals must be able to access information held about them, and correct or delete it if it is inaccurate.
+    \item \textbf{Enforcement} - There must be effective means of enforcing these rules.
+    \end{itemize}
+    \end{scriptsize}
+    \footnotesize{Source: \url{{http://en.wikipedia.org/wiki/International_Safe_Harbor_Privacy_Principles}}}
 \end{frame}
 
 \begin{frame}
@@ -288,7 +322,72 @@
     systems that give privacy guarantees */
     \begin{itemize}
       \item Only store encrypted data and let the client encrypt it on their machine
+      \item Make use of homomorphic encryption to be able to work with encrypted data
       \item Don't log sensitive data
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Case study: private cyberlocker}
+    \begin{itemize}
+    \item Secure encrypted data
+    \item Deduplication
+    \item Key management
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Secure encrypted data}
+    \begin{itemize}
+    \item Open source design
+    \item No use of driver blobs, browser plugins or server-side code
+    \item Encryption/decryption only happens in the client
+    \item Keys only available on client(s)
+    \end{itemize}
+\end{frame}
+
+%\begin{frame}
+    %\frametitle{Deduplication of encrypted data}
+    %Use a checksum of the plaintext leaks information about what is stored.
+%\end{frame}
+
+\begin{frame}
+    \frametitle{Key management}
+    Make backup keys
+    
+    Private:
+    $k_A = genKey()$
+    $k_B = genKey()$
+    \dots
+
+    $o = hash(p)$
+
+    Public:
+    $o_A = E(o, k_A)$
+    $o_B = E(o, k_B)$
+    \dots
+
+    $c = E(p,o)$
+    % Each file has a different key
+    % Low overhead
+    % Flexible to add new keys/owners
+\end{frame}
+
+\begin{frame}
+    \frametitle{What is stored}
+    \begin{itemize}
+    \item Encrypted blob with metadata, checksum
+    \item Plaintext's checksum encrypted with user keys
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Results}
+    \begin{itemize}
+    \item Usable in public and private cloud
+    \item Easy deduplication
+    \item Add a new (device key) with your old key
+    \item Poor backward security
     \end{itemize}
 \end{frame}
 
