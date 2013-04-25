@@ -44,11 +44,11 @@
     %(with a picture?), public/private/community/hybrid clouds  */
     \begin{itemize}
         \item Software as a Service (SaaS) \\
-            \scriptsize{Webmail, online storage, social media}
+            Webmail, online storage, social media
         \item Platform as a Service (PaaS) \\
-            \scriptsize{Virtual application platforms}
+            Virtual application platforms
         \item Infrastructure as a Service (IaaS) \\
-            \scriptsize{Scalable computing and storage services}
+            Scalable computing and storage services
         \item Test: \bibentry{takabi2010security} % remove after real references added in
     \end{itemize}
 \end{frame}
@@ -62,13 +62,13 @@
 \end{frame}
 
 \begin{frame}
-    \frametitle{Who are we dealing with?}
+    \frametitle{Whom are we dealing with?}
     \only<1>{
     Roles:
     \begin{itemize} % We might put this in a pyramid diagram
-      \item Cloud service providers that offer $X$aaS
-      \item Cloud service users that build services on that
-      \item Customers of these services
+        \item Cloud service providers that offer XaaS
+        \item Cloud service users that build services on said service
+        \item Customers of these services
     \end{itemize}
     }
 
@@ -76,11 +76,12 @@
     Cloud Service providers:
     \begin{itemize}
     \item SaaS \\
-      \scriptsize{Google, Apple, Microsoft}
+        (Google, Apple, Microsoft)
     \item PaaS \\
-      \scriptsize{Google AppEngine, Amazon AWS, Microsoft Azure (SQL), EngineYard, Heroku}
+        (Google AppEngine, Amazon AWS, Microsoft Azure (SQL), EngineYard,
+        Heroku)
     \item IaaS \\
-      \scriptsize{Amazon EC2 / S3, Google Compute Engine / BigQuery, Linode}
+        (Amazon EC2 / S3, Google Compute Engine / BigQuery, Linode)
     \end{itemize}
     }
     % Cloud service users: some sites you use, customers: you
@@ -91,12 +92,12 @@
     %/* Why use cloud computing at all; virtualization, scaling, fast
     %deployment, pay-for-use, etc  */
     \begin{itemize}
-    \item Cost
-    \item Fast wide scalability
-    \item Pay as you go
-    \item Outsource responsibility
-    \item Has better security than most providers
-    \item Buzz
+        \item Cost
+        \item Fast wide scalability
+        \item Pay as you go
+        \item Outsource responsibility
+        \item Has better security than most providers
+        \item Buzz
     \end{itemize}
 \end{frame}
 
@@ -106,11 +107,13 @@
     %problems (depending on type of cloud); picture(s) about cloud security for
     %fun and profit */
     \begin{itemize}
-      \item Centralized assets
-      \item Less diversity
-      \item Shared environment
-      \item Resource sharing (logical segregation)
-      \item Major impact when breaches do occur
+        \item Centralized assets
+        \item Less diversity
+        \item Resource sharing (logical segregation)
+        \item Usually has better security
+        \item But: major impact when breaches do occur
+        \item Typical centralized versus decentralized discussion
+        \item Faith in the cloud provider?
     \end{itemize}
 \end{frame}
 
@@ -131,37 +134,45 @@
     %/* Global overview on specific privacy concerns w.r.t. clouds; example(s)
     %of how things can go badly; primarily: why does it matter! */
     \begin{itemize}
-      \item ``Real name policy''
-      \item Data ownership
-      \item Continuity
-      \item Local legislation % For example: age of consent in various countries - flickr picture legal one place, illegal in another
-      %\item Piracy claims vs Fair use % (YouTube knows about that song you ripped off and is obliged to tell the authorities)
-      \item The declining cost of storing \textbf{everything}
-      \item Ability to analyse large amounts of personal data
-      \item SLA/EULA
+        \item ``Real name policy''
+        \item Data ownership
+        \item Continuity
+        \item Local legislation % For example: age of consent in various countries - flickr picture legal one place, illegal in another
+            %\item Piracy claims vs Fair use % (YouTube knows about that song you ripped off and is obliged to tell the authorities)
+        \item The declining cost of storing \textbf{everything}
+        \item Thus making breaches evermore dangerous, however they occur
+        \item Given the ability to analyse large amounts of personal data
+        \item SLA/EULA
     \end{itemize}
 \end{frame}
 
 \begin{frame}
     \frametitle{Provider viewpoints}
     \begin{itemize}
-    \item Google: ``Onze menukaart is beperkt, maar je kunt toch weg? Dan moet
+        \item \textbf{Google}: ``Onze menukaart is beperkt, maar je kunt toch weg? Dan moet
         je verder niet zeiken'' (``Google weigert data in Europa te houden'' -
         Webwereld, 2011)
-    \item Microsoft: ``Microsoft cannot provide those guarantees. Neither can
+    \item \textbf{Microsoft}: ``Microsoft cannot provide those guarantees. Neither can
         any other company'' (``Microsoft admits Patriot Act can access EU-based
         cloud data'' - ZDnet, 2011)
-    \item Amazon: ``Customers can choose to store all data in the EU by using
+    \item \textbf{Amazon}: ``Customers can choose to store all data in the EU by using
         the EU (Ireland) Amazon S3 Region.'' (Amazon S3 FAQ)
     \end{itemize}
 \end{frame}
 
-%\begin{frame}
-    %\frametitle{Data locations}
-    %\begin{itemize}
-    %\item OV chipkaart: Talys, France
-    %\end{itemize}
-%\end{frame}
+\begin{frame}
+    \frametitle{Dude, where's my data}
+    Where is our data?
+    \begin{itemize}
+        \item In general: we do not know
+        \item And it is hard to find out
+        \item But sometimes we do\dots (OV chipkaart: Talys, France)
+    \end{itemize}
+
+    \begin{block}{Essential idea}<2>
+    The \emph{cloud} is an abstraction.
+    \end{block}
+\end{frame}
 
 \section{Legal aspects}
 % Another 20 minutes should be doable
