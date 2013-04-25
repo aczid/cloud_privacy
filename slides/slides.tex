@@ -96,6 +96,7 @@
         \item Fast wide scalability
         \item Pay as you go
         \item Outsource responsibility
+        \item Has better security than most providers
         \item Buzz
     \end{itemize}
 \end{frame}
@@ -108,12 +109,23 @@
     \begin{itemize}
         \item Centralized assets
         \item Less diversity
-        \item Shared environment
-        \item Logical segregation
+        \item Resource sharing (logical segregation)
         \item Usually has better security
         \item But: major impact when breaches do occur
         \item Typical centralized versus decentralized discussion
         \item Faith in the cloud provider?
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Personal data}
+    \begin{itemize}
+      \item E-mail address
+      \item IP address
+      \item Username
+      \item Password
+      \item Banking details
+      \item Medical records
     \end{itemize}
 \end{frame}
 
@@ -124,12 +136,13 @@
     \begin{itemize}
         \item ``Real name policy''
         \item Data ownership
+        \item Continuity
         \item Local legislation % For example: age of consent in various countries - flickr picture legal one place, illegal in another
             %\item Piracy claims vs Fair use % (YouTube knows about that song you ripped off and is obliged to tell the authorities)
         \item The declining cost of storing \textbf{everything}
         \item Thus making breaches evermore dangerous, however they occur
-            %\item SLAs
-        \item \dots
+        \item Given the ability to analyse large amounts of personal data
+        \item SLA/EULA
     \end{itemize}
 \end{frame}
 
@@ -148,7 +161,7 @@
 \end{frame}
 
 \begin{frame}
-    \frametitle{Data locations}
+    \frametitle{Dude, where's my data}
     Where is our data?
     \begin{itemize}
         \item In general: we do not know
@@ -175,14 +188,22 @@
     %protection and privacy directives. */
     \begin{itemize}
         \item EU Data protection directive 95/46/EC
-        \item Safe Harbor principle
+        \item e-Privacy Directive 2002/58/EC
         \item PATRIOT act
-        \item \dots
+        \item Safe Harbor principle (as per 95/46/EC)
     \end{itemize}
+
+    \begin{itemize}
+        \item Data subject
+        \item Data controller \checkmark
+        \item Data processor \checkmark
+    \end{itemize}
+    % Data processors have it easier WRT legal requirements
 \end{frame}
 
 \begin{frame}
     \frametitle{Safe harbor principle}
+    % Alleen van toepassing voor overdracht van privedata
     \begin{scriptsize}
     \begin{itemize}
         \item \textbf{Notice} - Individuals must be informed that their data is being collected and about how it will be used.
@@ -198,14 +219,6 @@
 \end{frame}
 
 \begin{frame}
-    \frametitle{As always: "it depends"}
-    /* Legal analysis differs given the type of cloud computing (so break it
-    down), it matters whether we have public or private clouds, IaaS or SaaS,
-    etc. */
-    % Erik, ik weet niet welke kant je hiermee op wilt - laat ik aan jou over
-\end{frame}
-
-\begin{frame}
     \frametitle{Service Level Agreements (SLAs)}
     \begin{itemize}
     \item Contract law
@@ -215,13 +228,67 @@
         \item may allow one of these to go down at points
         \item may give different guarantees for different aspects
       \end{itemize}
-    \item ...
+    \item Are often unnecessarily vague
+    \end{itemize}
+    \footnotesize{``Gartner: Amazon, HP cloud SLAs are `practically useless''', NetworkWorld, 2012}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Accountability beyond data transfer}
+    \begin{itemize}
+    \item ISO27001
+    \item SAS70 % Statement on Auditing Standards
+    \item SSAE16 % Statement on Standards for Attestation Engagements
+    \item ISAE 3402 % International Standards for Security Engagements
+    \item Third party memorandum
     \end{itemize}
 \end{frame}
 
 \begin{frame}
     \frametitle{There is more to law than code}
-    /* If we do manage to find relevant case law, put it here */
+    %/* If we do manage to find relevant case law, put it here */
+    Article 29 Working Party - (draft) Opinion on cloud computing
+    \begin{itemize}
+    \item Legal code for data protection reaffirmed
+    \item Concerned about confidentiality integrity, availability, isolation, transparency, 
+    \item Advises comprehensive risk analysis before moving to cloud
+    \item Consider risks, legal requirements, sensitive data
+    \item Actually provides a checklist
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{As always: ``it depends''}
+    /* Legal analysis differs given the type of cloud computing (so break it
+    down), it matters whether we have public or private clouds, IaaS or SaaS,
+    etc. */
+    % Erik, ik weet niet welke kant je hiermee op wilt - laat ik aan jou over
+\end{frame}
+
+\begin{frame}
+    \frametitle{National Security Letters}
+    \begin{itemize}
+    \item Subpoena transactional data
+    \item No legal recourse
+    \item Come with lifelong gag order
+    \item PATRIOT act enabled DHS to send NSLs
+    \item 192,499 were filed between 2003 and 2006 \footnote{``A Review of the FBI's Use of National Security Letters'' - US DoJ Inspector General, 2008}
+    \item Deemed unconstitutional by SF District Court
+    \item Senate bill required for more accountability
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{NSL case law: John Doe vs Ashcroft}
+    \begin{itemize}
+    \item Anonymous ISP (Calyx) gets NSLs summoning all kinds of data
+    \item ACLU files first amendment claim against attorney general John Ashcroft
+    \item NY District Court deems NSL provisions unconstitutional
+    \item Congress allows limited review through the law
+    \item Government appeals and gets the case dismissed
+    \item Same NY judge considers revised provisions and strikes them down again
+    \item Government might still appeal
+    \end{itemize}
 \end{frame}
 
 % Perhaps this is a good one to encite a discussion
@@ -237,17 +304,25 @@
     \end{itemize}
 \end{frame}
 
-\begin{frame}
-    \frametitle{Reinventing the wheel}
-    /* Some room for discussion: how does our audience feel about the legal
-    bits and pieces? */
-\end{frame}
-
 \section{Technical aspects}
 
 \begin{frame}
   \frametitle{Outline}
   \tableofcontents[currentsection,currentsubsection]
+\end{frame}
+
+\begin{frame}
+    \frametitle{Reinventing the wheel}
+    %/* Some room for discussion: how does our audience feel about the legal
+    %bits and pieces? */
+    Just like mainframes?
+    \begin{itemize}
+    \item Scale
+    \item Networked environment
+    \item No absolute control
+    \item Automatic provisioning
+    \item Low barrier to entry
+    \end{itemize}
 \end{frame}
 
 \begin{frame}
@@ -277,10 +352,12 @@
     \frametitle{Identity management}
     Prevent identity fraud:
     \begin{itemize}
-      \item Single sign-on (SSO) % Maybe not this... but it's related
+      \item Single Sign-On (SSO) outside corporate environments % Maybe not this... but it's related
       \item Multi-factor authentication
       \item Password policies, security questions
-      %\item SSL validity
+      \item VPN connections
+      \item SSL validity
+      \item Still rests on PKI
     \end{itemize}
 \end{frame}
 
@@ -331,30 +408,32 @@
     Modern equivalent: cloudburst exploit \\
     Prevent breaking out of virtual machines:
     \begin{itemize}
-      \item Fabric management
+      \item Software management
       \item Host-based intrusion detection
-      \item \dots
+      \item Hope for the best
     \end{itemize}
 \end{frame}
 
 \begin{frame}
-    \frametitle{The best defense is a good\dots}
-    /* Attacks, attacks and more attacks; If possible, frighten the audience!
-    Malicious images, simple(r) web application vulnerabilities, etc */
+    \frametitle{Cloud attacks}
+    %/* Attacks, attacks and more attacks; If possible, frighten the audience!
+    %Malicious images, simple(r) web application vulnerabilities, etc */
     \begin{itemize}
-      \item Poisoning the well (Harron Meer, 2009)
+      \item Simple bruteforcing cloud apps
       \item Cracking in the cloud (Various) % TODO cite
       \item Gigabit DDoS as a service % 250Mbit/s per node!
-      \item Linode hack
+      \item Poisoning the well (Harron Meer, 2009)
+      \item Stealing licence keys (Harron Meer, 2009)
     \end{itemize}
 \end{frame}
 
 \begin{frame}
-    \frametitle{The best offense is a good\dots}
-    /* Countermeasures; PETs; best practices; more detailed explanations of
-    systems that give privacy guarantees */
+    \frametitle{Privacy Enhancing Technologies}
+    %/* Countermeasures; PETs; best practices; more detailed explanations of
+    %systems that give privacy guarantees */
     \begin{itemize}
-      \item Only store encrypted data and let the client encrypt it on their machine
+      \item Only store/transfer encrypted data and let the client encrypt it on their machine
+      \item Don't store encryption keys in the cloud
       \item Make use of homomorphic encryption to be able to work with encrypted data
       \item Don't log sensitive data
     \end{itemize}
