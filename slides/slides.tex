@@ -192,6 +192,7 @@
         \item e-Privacy Directive 2002/58/EC
         \item PATRIOT act
         \item Safe Harbor principle (as per 95/46/EC)
+        \item WBP (NL)
     \end{itemize}
 
     \begin{itemize}
@@ -287,10 +288,21 @@
 
 \begin{frame}
     \frametitle{As always: ``it depends''}
-    /* Legal analysis differs given the type of cloud computing (so break it
-    down), it matters whether we have public or private clouds, IaaS or SaaS,
-    etc. */
-    % Erik, ik weet niet welke kant je hiermee op wilt - laat ik aan jou over
+    Who is responsible for what?
+    \begin{itemize}
+        \item<1> IaaS:
+            Relatively low level; service provider primarily responsible for availability
+            and hypervisor and physical security. The rest is the user's
+            responsibility.
+        \item<2> PaaS:
+            Additionaly, requires the provider to make sure the platform is
+            properly protected, e.g., expose only secure tooling. User's
+            responsibility lies primarily in securing developed applications.
+        \item<3> SaaS:
+            Service provider needs to provide as much security on all fronts as
+            possible. User of said service can, and should, assume that the
+            service is adequatly secured.
+    \end{itemize}
 \end{frame}
 
 \begin{frame}
