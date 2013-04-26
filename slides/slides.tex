@@ -198,8 +198,8 @@
 
     \begin{itemize}
         \item Data subject
-        \item Data controller (client) \checkmark
-        \item Data processor (provider) \checkmark
+        \item Data controller (client) %\checkmark
+        \item Data processor (provider) %\checkmark
     \end{itemize}
     % Data processors have it easier WRT legal requirements
 \end{frame}
@@ -563,6 +563,19 @@
     \end{tabular}
 
     \footnotesize{``Cloud computing broke password hashing'' - Rais Mense, 2013}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Debian OpenSSL bug}
+Generating 524,288 RSA keys
+    \begin{itemize}
+    \item 262,144 RSA keys on 20 32-bit instances
+    \item \$0.10 x 20 machines x 4 hours = \$8
+    \item 262,144 RSA keys on 20 64-bit instances
+    \item \$0.20 x 20 machines x 2 hours = \$8
+    \item Decrypting your SSL traffic: Priceless
+    \end{itemize}
+    \footnotesize{``Crippling Crypto'' - Appelbaum, Dai Zovi, Nohl, 2009}
 \end{frame}
 
 \begin{frame}
