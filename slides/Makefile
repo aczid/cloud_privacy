@@ -18,4 +18,4 @@ clean:
 	rm -rf ${TMPDIR}
 
 distclean: clean
-	rm -f *.pdf
+	rm -f ${SRCDIR}/${FILENAME}.pdf
