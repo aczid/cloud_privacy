@@ -198,10 +198,25 @@
 
     \begin{itemize}
         \item Data subject
-        \item Data controller \checkmark
-        \item Data processor \checkmark
+        \item Data controller (client) \checkmark
+        \item Data processor (provider) \checkmark
     \end{itemize}
     % Data processors have it easier WRT legal requirements
+\end{frame}
+
+\begin{frame}
+    \frametitle{Houston, we've got a problem}
+    General legal problems in cloud computing:
+    \begin{itemize}
+        \item Multi-jurisdiction
+        \item Multi-tenancy
+    \end{itemize}
+
+    \begin{block}
+        Entails the problems emerging due to different users belong to
+        different jurisdictions on a single system in possibly another
+        jurisdiction.
+    \end{block}
 \end{frame}
 
 \begin{frame}
@@ -277,11 +292,11 @@
 \begin{frame}
     \frametitle{Accountability beyond data transfer}
     \begin{itemize}
-    \item ISO27001
-    \item SAS70 % Statement on Auditing Standards
-    \item SSAE16 % Statement on Standards for Attestation Engagements
-    \item ISAE 3402 % International Standards for Security Engagements
-    \item Third party memorandum % Basically jsut a paper
+    \item ISO27001, standards for informaiton security
+    \item SAS70, statement on Auditing Standards
+    \item SSAE16, statement on Standards for Attestation Engagements
+    \item ISAE 3402, International Standards for Security Engagements
+    \item Third party memorandum 
     \end{itemize}
 \end{frame}
 
@@ -302,15 +317,15 @@
     \frametitle{As always: ``it depends''}
     Who is responsible for what?
     \begin{itemize}
-        \item<1> IaaS:
+        \item IaaS:
             Relatively low level; service provider primarily responsible for availability
             and hypervisor and physical security. The rest is the user's
             responsibility.
-        \item<2> PaaS:
+        \item PaaS:
             Additionaly, requires the provider to make sure the platform is
             properly protected, e.g., expose only secure tooling. User's
             responsibility lies primarily in securing developed applications.
-        \item<3> SaaS:
+        \item SaaS:
             Service provider needs to provide as much security on all fronts as
             possible. User of said service can, and should, assume that the
             service is adequatly secured.
