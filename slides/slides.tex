@@ -538,31 +538,31 @@
 
 \begin{frame}[fragile]
     \frametitle{Amazon EC2 cracking costs, exhaustive}
-    8 character password a-z ($26^8$)
-    \begin{tabular}{l | r}
-    MD5 & 80 seconds \\
-    SHA-1 & 261 seconds \\
-    NTLM & 65 seconds \\
-    bcrypt & $~2.7$ years \\
-    \end{tabular}
-    
-    8 character password a-Z ($52^8$)
-    \begin{tabular}{l | r}
-    MD5 & $<6$ hours \\
-    SHA-1 & $<20$ hours \\
-    NTLM & $<5$ hours \\
-    bcrypt & $~1400$ years \\
-    \end{tabular}
-
-    8 character password a-Z0-9 ($62^8$)
-    \begin{tabular}{l | r}
-    MD5 & $<1$ day \\
-    SHA-1 & $<3$ days \\
-    NTLM & $<1$ day \\
-    bcrypt & $~8800$ years \\
-    \end{tabular}
-
+    \begin{columns}
+            \column{0.6\textwidth}
+            \begin{itemize}
+                \item 8 character password a-z ($26^8$)
+                \item 8 character password a-Z ($52^8$)
+                \item 8 character password a-Z0-9 ($62^8$)
+            \end{itemize}
+            \column{0.4\textwidth}
+            \begin{tabular}{l | r}
+            MD5 & 80 seconds \\
+            SHA-1 & 261 seconds \\
+            NTLM & 65 seconds \\
+            bcrypt & $~2.7$ years \\ \hline
+            MD5 & $<6$ hours \\
+            SHA-1 & $<20$ hours \\
+            NTLM & $<5$ hours \\
+            bcrypt & $~1400$ years \\ \hline
+            MD5 & $<1$ day \\
+            SHA-1 & $<3$ days \\
+            NTLM & $<1$ day \\
+            bcrypt & $~8800$ years \\
+            \end{tabular}
+    \end{columns}
     \footnotesize{``Cloud computing broke password hashing'' - Rais Mense, 2013}
+
 \end{frame}
 
 \begin{frame}
