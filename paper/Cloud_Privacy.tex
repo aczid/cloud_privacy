@@ -37,12 +37,25 @@ If any central component of cloud infrastructure were to be compromised it could
 
 In this paper we will sum up some of the potential and actual privacy-related problems we have encountered as part of our literature study in the technical and legal domains surrounding Cloud Computing.
 
-\section{Legal Aspects}
-In this section we will sum up the relevant legal aspects surrounding Cloud computing.
+\section{Problems in cloud computing}
+General concerns with cloud security: centralisation, single point of failure, corporate espionage, subpoenas to the provider, impact of security compromises
+\cite{chow2009controlling}
+
+We want to cover either of these two cases:
+
+\subsection{Problem case summary: Doe vs Ashcroft}
+Summary of the story of an ISP that got a NSL - and what an NSL actually demands
+\cite{garlinger2009privacy, gorham2008national}
+
+\subsection{Problem case summary: Cyberlocker raids}
+How cloud providers are being held accountable for the content they host
+
+\section{Legal analysis}
+In this section we will review the relevant legal aspects surrounding Cloud computing.
 
 \subsection{Legislature}
-The key legislature is the EU Data Protection Directive 95/46/EC, which provides basic rights to consumers' data by obligating data collectors to uphold the right to privacy. \cite{directive199595}
-This is based on seven principles deemed necessary to guard citizen privacy, to wit:
+The key legislature is the EU Data Protection Directive 95/46/EC, which provides basic rights to consumers' data by obligating data collectors to uphold their right to privacy. \cite{directive199595}
+This directive is based on seven principles surrounding citizen privacy, to wit:
 \begin{itemize}
 \item Data subjects should be given notice of collection;
 \item Data should only be used for the purposes specified;
@@ -68,24 +81,28 @@ It's interesting to note that the United States Department of Commerce has worke
 It's also interesting to note that the Digital Millenium Copyright Act (DMCA) recognizes the concept of a ``mere conduit'' (of information) as did the Data Protection Directive. \cite{congress1998digital}
 
 \subsection{Contract law}
-SLAs
+SLAs and how undesirable some of their provisions are
 
-Auditing standards
+Auditing standards and the fact that no practical baseline audit standards are mandated by relevant law
 
-\subsection{Case law}
 Article 29 WP opinion (draft, nog geen reference)
 
-Lindqvist case
+%\subsection{Case law}
+%Lindqvist case
 
-\subsubsection{Case study: Doe vs Ashcroft}
-\cite{garlinger2009privacy, gorham2008national}
+\section{Privacy-Enhancing Technologies}
+Only store encrypted data, Let clients perform crypto so it can be validated externally
+\cite{kamara2010cryptographic}
 
-\section{Technical Aspects}
+Homomorphic encryption,
+Searching in encrypted data \cite{harrower2009searching, li2010fuzzy}
+
+\section{Technical analysis}
 Security considerations in cloud infrastructure
 
-Summary of techniques for security, focussing on Confidentiality and Integrity as we know them from other areas
+Summary of techniques for security, focussing on Confidentiality and Integrity as we know them from general computing
 
-\subsection{Hypervisor security}
+%\subsection{Hypervisor security}
 ``Reflections on Trusting Trust'' by Kevin Thompson \cite{thompson1984reflections}
 
 Hardware backdoors \cite{sparks2009chipset, duflot2010limits}
@@ -93,21 +110,18 @@ Hardware backdoors \cite{sparks2009chipset, duflot2010limits}
 Reverse engineering requirement
 \cite{rutkowska2008bluepilling}
 
-\subsection{Past attacks}
-Past security vulnerabilities (that threaten privacy)
-\cite{meer2009clobbering}
-
-\subsection{Privacy-Enhancing Technologies}
-Only store crypted data, Let clients perform crypto so it can be validated externally
-\cite{itani2009privacy, chow2009controlling}
-
-Homomorphic encryption,
-Searching in encrypted data \cite{harrower2009searching, li2010fuzzy, kamara2010cryptographic}
-
 \subsection{Case study: private cyberlocker}
-Our ideas to keep private data private in cloud storage without sacrificing deduplication
+How MEGA/Megaupload tried to cover themselves (and to a lesser extent their users) from the burden of accountability for the data they host
+
+Our ideas to keep private data private in cloud storage without sacrificing de-duplication
+(subject to further experimentation)
+
+%\subsection{Past attacks}
+%Past security vulnerabilities (that threaten privacy)
+%\cite{meer2009clobbering}
 
 \section{Conclusion}
+So far we find the legislature adequate, but the technical solutions to hold cloud providers accountable severely limited.
 
 %\section{References}
 
