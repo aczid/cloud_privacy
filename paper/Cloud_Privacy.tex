@@ -1,0 +1,118 @@
+\documentclass[11pt]{article}
+\usepackage{enumitem}
+\usepackage{listings}
+\usepackage{color}
+\usepackage{tabularx}
+
+\usepackage{graphicx}
+\usepackage{url}
+\usepackage{sidecap}
+\usepackage{epstopdf}
+
+%\def\bibfont{\scriptsize}
+
+\usepackage{natbib}
+\setlength{\bibsep}{0.0pt}
+
+\begin{document}
+\title{Privacy in Cloud Computing}
+
+\author{Erik Boss \\ Aram Verstegen}
+%\institute{Radboud Universiteit Nijmegen}
+\date{\today}
+\maketitle
+
+%\begin{abstract}
+%\end{abstract}
+
+\section{Introduction}
+In recent years there has been a lot of positive buzz surrounding the idea of \textit{cloud computing}: a systems design trend that allows applications to run as ubiquitous services by providing abstractions to the lower layers of application architecture.
+These layers can be distinguished as \textit{Software}, \textit{Platform} and \textit{Infrastructure} and each of these has a different target audience which can buy these facilities ``as a service''.
+Such abstractions bring benefits like implicit redundancy, centralized security measures and, most importantly, reduces capital and operational expenses for customers by the increased efficiency at which each layer can be managed.
+
+That being said, there is also a note of concern with things like centralized information management, giving up physical segregation for logical segregation, near-infinite storage capacity, cheap, ubiquitous computing power and the legal issues surrounding information processing systems whose infrastructure scale transcends national borders.
+
+In Cloud Computing it's apparent that there is a very strong connection between security and privacy.
+If any central component of cloud infrastructure were to be compromised it could almost certainly be used to disclose very privacy-sensitive information, given the scale of cloud infrastructure providers and what kind of private information is (or can be) recorded using applications running ``in the cloud'', and because there is proof or technically feasible way to prove that a compromise hasn't occurred.
+
+In this paper we will sum up some of the potential and actual privacy-related problems we have encountered as part of our literature study in the technical and legal domains surrounding Cloud Computing.
+
+\section{Legal Aspects}
+In this section we will sum up the relevant legal aspects surrounding Cloud computing.
+
+\subsection{Legislature}
+The key legislature is the EU Data Protection Directive 95/46/EC, which provides basic rights to consumers' data by obligating data collectors to uphold the right to privacy. \cite{directive199595}
+This is based on seven principles deemed necessary to guard citizen privacy, to wit:
+\begin{itemize}
+\item Data subjects should be given notice of collection;
+\item Data should only be used for the purposes specified;
+\item Data should not be disclosed without the subject's consent;
+\item The data processors should uphold adequate security;
+\item It should be disclosed to data subjects who is processing their information;
+\item Data subjects should be allowed to access and update their data;
+\item It should be possible to hold data collectors accountable to these principles.
+\end{itemize}
+
+This legislature is set to be succeeded by the General Data Protection Regulation, which amends the code to extend its reach beyond the EU, and applies everywhere information about EU citizens is collected.
+It also mandates that data breaches must be reported to the Data Protection Authority, and stipulates serious fines for failure to comply.
+
+A complement to the Data Protection Directive we already have is the E-privacy Directive (Directive on Privacy and Electronic Communications), which also protects citizens from excessive data retention, spam e-mail and the use of tracking cookies without explicit consent.
+This document spawned the much-debated ``Cookie law'' (Cookiewet) in the Netherlands.
+
+It is our opinion that the EU has drafted good legislation to maintain privacy here.
+The biggest problem that remains is holding companies that process EU citizen data overseas accountable.
+The multi-tenancy approach to building cloud applications leads to a multi-jurisdiction problem.
+Luckily this will be addressed in the forthcoming General Data Protection Regulation.
+
+It's interesting to note that the United States Department of Commerce has worked with the EU to develop the Data Protection Directive principles into what they call ``Safe Harbor'' principles which US companies can opt-in to.
+It's also interesting to note that the Digital Millenium Copyright Act (DMCA) recognizes the concept of a ``mere conduit'' (of information) as did the Data Protection Directive. \cite{congress1998digital}
+
+\subsection{Contract law}
+SLAs
+
+Auditing standards
+
+\subsection{Case law}
+Article 29 WP opinion (draft, nog geen reference)
+
+Lindqvist case
+
+\subsubsection{Case study: Doe vs Ashcroft}
+\cite{garlinger2009privacy, gorham2008national}
+
+\section{Technical Aspects}
+Security considerations in cloud infrastructure
+
+Summary of techniques for security, focussing on Confidentiality and Integrity as we know them from other areas
+
+\subsection{Hypervisor security}
+``Reflections on Trusting Trust'' by Kevin Thompson \cite{thompson1984reflections}
+
+Hardware backdoors \cite{sparks2009chipset, duflot2010limits}
+
+Reverse engineering requirement
+\cite{rutkowska2008bluepilling}
+
+\subsection{Past attacks}
+Past security vulnerabilities (that threaten privacy)
+\cite{meer2009clobbering}
+
+\subsection{Privacy-Enhancing Technologies}
+Only store crypted data, Let clients perform crypto so it can be validated externally
+\cite{itani2009privacy, chow2009controlling}
+
+Homomorphic encryption,
+Searching in encrypted data \cite{harrower2009searching, li2010fuzzy, kamara2010cryptographic}
+
+\subsection{Case study: private cyberlocker}
+Our ideas to keep private data private in cloud storage without sacrificing deduplication
+
+\section{Conclusion}
+
+%\section{References}
+
+\bibliography{Cloud_Privacy}{}
+\bibliographystyle{plain}
+
+\end{document}
+
