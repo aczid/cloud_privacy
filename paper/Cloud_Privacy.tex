@@ -5,7 +5,7 @@
 \usepackage{tabularx}
 
 \usepackage{graphicx}
-\usepackage{url}
+\usepackage{hyperref}
 \usepackage{sidecap}
 \usepackage{epstopdf}
 
@@ -17,7 +17,7 @@
 \begin{document}
 \title{Privacy in Cloud Computing}
 
-\author{Erik Boss \\ Aram Verstegen}
+\author{Erik Boss \and Aram Verstegen}
 %\institute{Radboud Universiteit Nijmegen}
 \date{\today}
 \maketitle
@@ -27,17 +27,19 @@
 
 \section{Introduction}
 In recent years there has been a lot of positive buzz surrounding the idea of \textit{cloud computing}: a systems design trend that allows applications to run as ubiquitous services by providing abstractions to the lower layers of application architecture.
-These layers can be distinguished as \textit{Software}, \textit{Platform} and \textit{Infrastructure} and each of these has a different target audience which can buy these facilities ``as a service''.
+These layers can be distinguished as \textit{Software}, \textit{Platform} and \textit{Infrastructure} and each of these has a different target audience which can buy these facilities ``as a service'', i.e., Software/Platform/Infrastructure as a Service (SaaS, PaaS, IaaS). 
 Such abstractions bring benefits like implicit redundancy, centralized security measures and, most importantly, reduces capital and operational expenses for customers by the increased efficiency at which each layer can be managed.
 
 That being said, there is also a note of concern with things like centralized information management, giving up physical segregation for logical segregation, near-infinite storage capacity, cheap, ubiquitous computing power and the legal issues surrounding information processing systems whose infrastructure scale transcends national borders.
 
-In Cloud Computing it's apparent that there is a very strong connection between security and privacy.
-If any central component of cloud infrastructure were to be compromised it could almost certainly be used to disclose very privacy-sensitive information, given the scale of cloud infrastructure providers and what kind of private information is (or can be) recorded using applications running ``in the cloud'', and because there is proof or technically feasible way to prove that a compromise hasn't occurred.
+In cloud computing it's apparent that there is a very strong connection between security and privacy.
+If any central component of cloud infrastructure were to be compromised it could almost certainly be used to disclose very privacy-sensitive information, given the scale of cloud infrastructure providers and what kind of private information is (or can be) recorded using applications running ``in the cloud''. In fact, there is no proof or technically feasible way to prove that such a compromise hasn't occurred.
 
-In this paper we will sum up some of the potential and actual privacy-related problems we have encountered as part of our literature study in the technical and legal domains surrounding Cloud Computing.
+In this paper we will go over some of the potential and actual privacy-related problems we have encountered as part of our study on the technical and legal domains of cloud computing. Starting off, in \autoref{sec:problems_in_cloud_computing} we shall give a fairly broad overview of the issues involved with cloud computing.
+This will lead into an analysis of the current legal situation regarding cloud computing in \autoref{sec:legal_analysis}. In \autoref{sec:pet} and \autoref{sec:technical_analysis} we will go over the technical situation, specifically describing some of the solutions to privacy-related problems in cloud computing by means of Privacy Enhancing Techologies (PETs).
 
 \section{Problems in cloud computing}
+\label{sec:problems_in_cloud_computing}
 General concerns with cloud security: centralisation, single point of failure, corporate espionage, subpoenas to the provider, impact of security compromises
 \cite{chow2009controlling}
 
@@ -51,6 +53,7 @@ Summary of the story of an ISP that got a NSL - and what an NSL actually demands
 How cloud providers are being held accountable for the content they host
 
 \section{Legal analysis}
+\label{sec:legal_analysis}
 In this section we will review the relevant legal aspects surrounding Cloud computing.
 
 \subsection{Legislature}
@@ -91,6 +94,7 @@ Article 29 WP opinion (draft, nog geen reference)
 %Lindqvist case
 
 \section{Privacy-Enhancing Technologies}
+\label{sec:pet}
 Only store encrypted data, Let clients perform crypto so it can be validated externally
 \cite{kamara2010cryptographic}
 
@@ -98,6 +102,7 @@ Homomorphic encryption,
 Searching in encrypted data \cite{harrower2009searching, li2010fuzzy}
 
 \section{Technical analysis}
+\label{sec:technical_analysis}
 Security considerations in cloud infrastructure
 
 Summary of techniques for security, focussing on Confidentiality and Integrity as we know them from general computing
