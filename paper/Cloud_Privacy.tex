@@ -139,6 +139,49 @@ Even after the new legislation comes into effect, the PATRIOT act~\cite{mailman2
 
 % Legal responsibilities as a function of the type of cloud architecture (see slides for the idea)
 
+\section{Current State of Affairs}
+\label{sec:technical_analysis}
+%Security considerations in cloud infrastructure
+
+%Summary of techniques for security, focussing on Confidentiality and Integrity as we know them from general computing
+
+%\subsection{Hypervisor security}
+%``Reflections on Trusting Trust'' by Kevin Thompson \cite{thompson1984reflections}
+
+%Hardware backdoors \cite{sparks2009chipset, duflot2010limits}
+
+%Reverse engineering requirement
+%\cite{rutkowska2008bluepilling}
+In this section we shall provide a cursory review of the current state of affairs in technical solutions as implemented, or to be implemented, by some of the cloud storage providers out there.
+
+\subsection{Case study: private cyberlocker}
+\label{sec:cyberlocker}
+%How MEGA/Megaupload tried to cover themselves (and to a lesser extent their users) from the burden of accountability for the data they host
+%
+%Our ideas to keep private data private in cloud storage without sacrificing de-duplication
+%(subject to further experimentation)
+Following the disturbance in the cyberlocker ecosystem following the seizure of MegaUpload there has been growing interest in secure private cyberlocker services.
+This seems like a win-win situation for privacy: the cyberlocker sites have plausible deniability with respect to the content they are hosting, and their users can feel secure about their data privacy.
+We must ask ourselves why there is no true openness from any such providers of note to be found in the literature or when surfing the web. \cite{borgmann2012security}
+We tried to find out what we can from public sources about two newcomers to the scene.
+
+%In the market of so-called `cyberlocker' sites most don't use (or boast) any privacy enhancing technologies, and  those that do are not always open about their workings.
+MEGA and SpiderOak are both open about the fact that they make use of a layered approach whereby files are encrypted with strong random passwords, which are then encrypted by a single master password associated to the user.
+Assuming the underlying cipher and random generation algorithms are implemented in a cryptographically secure way such a scheme seems quite secure: neither the files nor their keys ever reach the server in the plain.
+Their approaches diverge when it comes to application delivery: where MEGA opted for in-browser delivery of content over the HTTPS channel SpiderOak chose to draft a native application for its service to better ensure application integrity (as it runs in a separate context).
+
+The SpiderOak client so far remains a closed-source application, but at least its code and behaviour can be audited and validated using traditional means in contrast to MEGAs due to their choice of the web browser as a code delivery environment, which is much more tamper-prone due to its intended malleability by add-ons.
+An adversary that could manage to infect our browser through a malicious add-on (which is more likely to happen than infecting the host) would be able to intercept and modify our entire interaction with the MEGA service.
+
+Both of these services offer de-duplication, but SpiderOak makes sure to point out it doesn't do so across users because they apply \textit{personal encryption} to each file.
+As we understand it, this also describes MEGAs scheme: neither can do secure de-duplication across users without linking users to content, and therefore avoid doing so.
+
+But if MEGA truly has no idea of what users upload to their service, how should we read the headline ``Kim Dotcom Pulls 3D Printed Gun Plans from MEGA''~\cite{3d_gun}.
+
+%\subsection{Past attacks}
+%Past security vulnerabilities (that threaten privacy)
+%\cite{meer2009clobbering}
+
 \section{Privacy-Enhancing Technologies}
 \label{sec:pet}
 
@@ -217,50 +260,18 @@ yet another may generate statistics over some collection of encrypted data.
 
 
 
-\section{Technical analysis}
-\label{sec:technical_analysis}
-%Security considerations in cloud infrastructure
-
-%Summary of techniques for security, focussing on Confidentiality and Integrity as we know them from general computing
-
-%\subsection{Hypervisor security}
-%``Reflections on Trusting Trust'' by Kevin Thompson \cite{thompson1984reflections}
-
-%Hardware backdoors \cite{sparks2009chipset, duflot2010limits}
-
-%Reverse engineering requirement
-%\cite{rutkowska2008bluepilling}
-
-\subsection{Case study: private cyberlocker}
-\label{sec:cyberlocker}
-%How MEGA/Megaupload tried to cover themselves (and to a lesser extent their users) from the burden of accountability for the data they host
-%
-%Our ideas to keep private data private in cloud storage without sacrificing de-duplication
-%(subject to further experimentation)
-Following the disturbance in the cyberlocker ecosystem following the seizure of MegaUpload there has been growing interest in secure private cyberlocker services.
-This seems like a win-win situation for privacy: the cyberlocker sites have plausible deniability with respect to the content they are hosting, and their users can feel secure about their data privacy.
-We must ask ourselves why there is no true openness from any such providers of note to be found in the literature or when surfing the web. \cite{borgmann2012security}
-We tried to find out what we can from public sources about two newcomers to the scene.
-
-%In the market of so-called `cyberlocker' sites most don't use (or boast) any privacy enhancing technologies, and  those that do are not always open about their workings.
-MEGA and SpiderOak are both open about the fact that they make use of a layered approach whereby files are encrypted with strong random passwords, which are then encrypted by a single master password associated to the user.
-Assuming the underlying cipher and random generation algorithms are implemented in a cryptographically secure way such a scheme seems quite secure: neither the files nor their keys ever reach the server in the plain.
-Their approaches diverge when it comes to application delivery: where MEGA opted for in-browser delivery of content over the HTTPS channel SpiderOak chose to draft a native application for its service to better ensure application integrity (as it runs in a separate context).
-
-The SpiderOak client so far remains a closed-source application, but at least its code and behaviour can be audited and validated using traditional means in contrast to MEGAs due to their choice of the web browser as a code delivery environment, which is much more tamper-prone due to its intended malleability by add-ons.
-An adversary that could manage to infect our browser through a malicious add-on (which is more likely to happen than infecting the host) would be able to intercept and modify our entire interaction with the MEGA service.
-
-Both of these services offer de-duplication, but SpiderOak makes sure to point out it doesn't do so across users because they apply \textit{personal encryption} to each file.
-As we understand it, this also describes MEGAs scheme: neither can do secure de-duplication across users without linking users to content, and therefore avoid doing so.
-
-But if MEGA truly has no idea of what users upload to their service, how should we read the headline ``Kim Dotcom Pulls 3D Printed Gun Plans from MEGA''~\cite{3d_gun}.
-
-%\subsection{Past attacks}
-%Past security vulnerabilities (that threaten privacy)
-%\cite{meer2009clobbering}
-
 \section{Conclusion}
-So far we find the legislature adequate, but the technical solutions to hold cloud providers accountable severely limited.
+
+Cloud computing is still becoming increasingly more popular and thus making sure we ``do it right'' becomes more important as well.
+In this paper we have attempted to provide an overview of the problems, both legal and technical, surrounding privacy and cloud comupting as well as an overview of the current situation with modern cloud providers.
+Furthemore, we have described two privacy-enhancing technologies, searchable encryption and reusable garbled circuits.
+The latter being a very generic approach to applying functions to encrypted data, the former being a solution to a specific problem, i.e., searching encrypted data.
+At the time of writing this paper, both solutions are likely infeasible to implement on any serious scale due to the performance issues associated with them.
+However, we can hope that Moore's law in combination with bleeding-edge research can alleviate this pain some time in the future.
+
+On a more personal note, we feel that the legal framework in Europe, especially considering the new and improved data protection regulation, is among the best in the world. We hope that sanity prevails in the face of over 2000 amendments to said regulation.
+
+All that said, we conclude in repeating that doing cloud computing privacy right is very, very important lest we succumb to the general notion that privacy is dead. It does not have to be.
 
 %\section{References}
 
