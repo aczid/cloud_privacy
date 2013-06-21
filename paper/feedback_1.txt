@@ -1,0 +1,20 @@
+The technical aspects demand much more attentions. E.g. Different cloud
+solutions can be assessed. It woul be interesting to write out the
+protocols Mega used and why this fails/succeeds to protect privacy.
+
+Will you explain the NSL and Patriot Act in relation to the EU data
+protection framework? If not, why do you focus on NSLs? Examples to
+underline the problem can be found in the EU jurisdiction too. Try to be
+accurate in the legal reasoning. Identify the data protection problems
+of cloud computing. Identify what aspects can and what aspects cannot be
+covered by your researched PETs.
+
+- you could additionally consider studying the security of several cloud
+providers, like owncloud, spideroak, teamdrive and wuala).
+
+- alternatively, you could study approaches that try to implement some
+form of deduplication with less privacy concerns than the traditional
+approach
+
+- I don't understand why/how the paper by Kevin Thompson is relevant for
+your paper...
