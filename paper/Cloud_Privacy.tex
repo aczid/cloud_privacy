@@ -50,8 +50,8 @@ There exists more redundancy in the more connected network, which helps make the
 %Some systems may appear to be more (logically) distributed than they actually (physically) are. 
 
 The main concern in related research is surrounding data privacy, but we find computational privacy to be of equal or greater concern.
-Remotely hosted applications come with the inherent problem that their behaviour can be more difficult to analyse in order asses their security/privacy.
-Whereas with personal computing the integrity of the system could be verified all the way down to the hardware level, the cloud environment requires trust in providers' ability to adequately handle privacy-sensitive information.
+Remotely hosted applications come with the inherent problem that their behaviour can be more difficult to analyse in order asses their security and privacy safeguards.
+Whereas with personal computing the integrity of the system can be verified all the way down to the hardware level, the cloud environment requires trust in providers' ability to adequately handle privacy-sensitive information.
 The problem is exacerbated by the fact that virtualization technologies abstract systems from the hardware layer, and require systems built upon them to similarly trust this technology during computation.
 And again there is centralization in these technologies, leading to concerns about (virtually) universal backdoors in all systems built upon a handful of such technologies.
 \cite{chow2009controlling}
@@ -76,10 +76,11 @@ The larger of these websites have in fact become so popular that they are in the
 Sharing services like these are known to be used as trafficking vehicles for pirated copyrighted media as they can provide free storage in a way that in most cases can be used anonymously, and can even generate profit for the uploader.
 One of such companies was the former MegaUpload: a company which had its assets seized by the United States Department of Justice in early 2012 on claims of illegal file sharing activity, in what is still unfolding as a particularly complex legal case.
 The company has since reinvented itself as MEGA, providing the same services but boasting better privacy and security by using cryptographic methods to mask the stored data.
-Following the legal prosecution, other companies like Ciphercloud and SpiderOak have also brought forth solutions to similar concerns.
-While MEGA and SpiderOak seem to have taken a cue from the cryptography community and chose an open design to be verifiable by its users, Ciphercloud have recently become the center of controversy after they tried to file a DMCA takedown notice against a StackExchange thread in which their cryptography was analyzed and consequently decimated.
+Following the (foreseen) legal prosecution, other companies like Ciphercloud and SpiderOak have also brought forth solutions to similar concerns.
+While MEGA and SpiderOak seem to have taken a cue from the cryptography community and chose to be open about their design to their users, Ciphercloud have recently become the center of controversy after they tried to file a DMCA takedown notice against a StackExchange thread in which their cryptography was analyzed and consequently decimated.
 % TODO source ciphercloud
-%We have decided to analyse the security of MEGA's design in \autoref{sec:cyberlocker}.
+Given the lack of provided open-source implementations, it still seems the cryptography argument is a bit of a hand-wave.
+We have decided to summarize some issues regarding these new designs in \autoref{sec:cyberlocker}.
 
 
 \section{Legal analysis}
@@ -147,6 +148,13 @@ Both come from the realm of cryptography and it should be noted that it is likel
 
 \subsection{Search under Encryption}
 
+
+% Only store encrypted data, Let clients perform crypto so it can be validated externally
+% \cite{kamara2010cryptographic}
+
+% Homomorphic encryption,
+% Searching in encrypted data \cite{harrower2009searching, li2010fuzzy}
+
 \subsection{Reusable Garbled Circuits}
 
 Goldwasser \cite{goldwasser2013reusable} recently provided the means to reuse so-called garbled circuits by means of a functional encryption scheme using \emph{succinct} functions.
@@ -184,12 +192,6 @@ All these services could operate on any data encrypted with $mpk$, regardless of
 One such service might provide search functionality, as described in the previous section.
 Another might provide some consistency check of the underlying plaintext data.
 
-% Only store encrypted data, Let clients perform crypto so it can be validated externally
-% \cite{kamara2010cryptographic}
-
-% Homomorphic encryption,
-% Searching in encrypted data \cite{harrower2009searching, li2010fuzzy}
-
 
 \section{Technical analysis}
 \label{sec:technical_analysis}
@@ -200,10 +202,10 @@ Another might provide some consistency check of the underlying plaintext data.
 %\subsection{Hypervisor security}
 %``Reflections on Trusting Trust'' by Kevin Thompson \cite{thompson1984reflections}
 
-Hardware backdoors \cite{sparks2009chipset, duflot2010limits}
+%Hardware backdoors \cite{sparks2009chipset, duflot2010limits}
 
-Reverse engineering requirement
-\cite{rutkowska2008bluepilling}
+%Reverse engineering requirement
+%\cite{rutkowska2008bluepilling}
 
 \subsection{Case study: private cyberlocker}
 \label{sec:cyberlocker}
@@ -211,11 +213,18 @@ Reverse engineering requirement
 %
 %Our ideas to keep private data private in cloud storage without sacrificing de-duplication
 %(subject to further experimentation)
-In the market of so-called `cyberlocker' sites most don't use (or boast) any privacy enhancing technologies.
-MEGA and SpiderOak do, and both make use of a layered approach whereby files are encrypted with strong random passwords, which are then encrypted by a single master password associated to the user.
-Assuming the underlying cipher and random generation algorithms are implemented in a cryptographically secure way such a scheme is seems quite secure: the files nor their keys never reach the server in the plain.
+Following the disturbance in the cyberlocker ecosystem following the seizure of MegaUpload there has been growing interest in secure private cyberlocker services.
+This seems like a win-win situation for privacy: the cyberlocker sites have plausible deniability with respect to the content they are hosting, and their users can feel secure about their data privacy.
+We must ask ourselves why there is no true openness from any such providers of note to be found in the literature or when surfing the web. \cite{borgmann2012security}
+We tried to find out what we can from public sources about two newcomers to the scene.
+
+%In the market of so-called `cyberlocker' sites most don't use (or boast) any privacy enhancing technologies, and  those that do are not always open about their workings.
+MEGA and SpiderOak are both open about the fact that they make use of a layered approach whereby files are encrypted with strong random passwords, which are then encrypted by a single master password associated to the user.
+Assuming the underlying cipher and random generation algorithms are implemented in a cryptographically secure way such a scheme seems quite secure: neither the files nor their keys ever reach the server in the plain.
 Their approaches diverge when it comes to application delivery: where MEGA opted for in-browser delivery of content over the HTTPS channel SpiderOak chose to draft a native application its service to better ensure application integrity (as it runs in a separate context).
-The SpiderOak client so far remains a closed-source application, but at least its code and behaviour can be audited and validated using traditional means in contrast to MEGAs due to their choice of delivery environment.
+
+The SpiderOak client so far remains a closed-source application, but at least its code and behaviour can be audited and validated using traditional means in contrast to MEGAs due to their choice of the web browser as a code delivery environment, which is much more tamper-prone due to its intended malleability by add-ons.
+An adversary that could manage to infect our browser through a malicious add-on (which is more likely to happen than infecting the host) would be able to intercept and modify our entire interaction with the MEGA service.
 
 
 %\subsection{Past attacks}
