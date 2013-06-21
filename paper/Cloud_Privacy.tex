@@ -104,11 +104,10 @@ This legislature is set to be succeeded by the General Data Protection Regulatio
 It also mandates that data breaches must be reported to the Data Protection Authority, and stipulates serious fines for failure to comply.
 Note, however, that this regulation is still under review and thus subject to change.
 
-
 Complementary to the Data Protection Directive is the E-privacy Directive (Directive on Privacy and Electronic Communications), which also protects citizens from excessive data retention, spam e-mail and the use of tracking cookies without explicit consent.
 This document spawned the much-debated ``Cookie law'' (Cookiewet) in the Netherlands.
 
-In a cloud computing setting, the main legal problems boil down to two issues: accountability of non-EU companies and multi-tenancy of cloud applications. Essentially, the problems emerge from different users belonging to different jurisdicitions using a system that is possibly in yet another jurisdiction. Try enforcing anything when the user lives in Europe, accessing an Asian server of an American company. Problems aplenty.
+In a cloud computing setting, the main legal problems boil down to two issues: accountability of non-EU companies and multi-tenancy of cloud applications. Essentially, the problems emerge from different users belonging to different jurisdicitions using a system that is possibly in yet another jurisdiction. Try enforcing anything when the user lives in Europe, accessing an Asian server of an American company. Problems aplenty, we should think.
 
 The type of cloud system, i.e., ``the X in XaaS'', also has its part to play in the legal setting of cloud computing.
 From IaaS (infrastructure) to SaaS (software), the responsibilities concerning privacy of provider and client change.
@@ -118,9 +117,8 @@ The client, however is responsible for building secure applications or platforms
 In a SaaS setting, the provider needs to provide more guarantees.
 A user needs to be sure that the software is adequately secured on infrastructure, platform and software level.
 Obviously, in the PaaS setting the responsibilities lie somewhere halfway between IaaS and SaaS. The provider needs to provide a secure platform but it is the client's job to provide the necessary safeguards for any application built on top of this platform.
-% Explain
 
-% Auditing standards and the fact that no practical baseline audit standards are mandated by relevant law
+We like to note that, when applying the sort of the solutions we describe in \autoref{sec:pet} we process significantly less personal data. Say, for instance, that we have a situation in which we want to search in a database. Now, if we apply techniques to search using encrypted queries in an encrypted database, we stop processing any personal data that is not linked to the communications protocol (like IP addresses). Such techniques, are in a way a win-win solution. They reduce liability risks for providers and provide privacy for users.
 
 As a side note, the United States Department of Commerce has worked with the EU to develop the Data Protection Directive principles into what they call ``Safe Harbor'' principles which US companies can opt-in to.
 This essentially allowed US companies to do business with the EU, which has the more stringent data protection legislation.
@@ -151,11 +149,47 @@ Both come from the realm of cryptography and it should be noted that it is likel
 
 \subsection{Reusable Garbled Circuits}
 
+Goldwasser \cite{goldwasser2013reusable} recently provided the means to reuse so-called garbled circuits by means of a functional encryption scheme using \emph{succinct} functions.
+This allows the computation of succinct functions on encrypted data without learning anything but the result of the function.
+To reuse Goldwasser's example, this allows us to, say, compute a spam-detection function on encrypted mail that learns nothing about the contents of said mail except whether it was classified as spam.
+We shall not go into the details of the security properties of this system but we shall attempt to indicate how they work.
+
+Essentially, a garbled circuit allows computation of a given function $f(x)$ without leaking information about $f$ or $x$.
+The only information learned is the output, $f(x)$.
+More precisely, we have a circuit $C$ that computes the respective function given input $x$.
+We garble the circuit by encoding it using some one-way function, this outputs the garbled circuit $C'$ and a secret key $sk$.
+The input $x$ is also encoded in order to fit the newly generated circuit.
+These circuits basically need to provide two things: the privacy of $x$ and the privacy of $C$ (input privacy and circuit privacy, respectively).
+Historically, such a garbled circuit was for one-time use only, new input required new encodings.
+What Goldwasser did is to provide a way to, with only one key and thus one encoding, apply the circuit to a polynomial number of inputs.
+
+As stated, in order to reuse such circuits we need a function encryption (FE) scheme.
+In such a scheme, we have a master public key $mpk$ that anyone can encrypt data with.
+Furthermore, the data owner can issue keys for functions that given a key $sk_f$ and ciphertext $c$ corresponding to input $x$ can compute $f(x)$ on $c$ using $sk_f$.
+In this case we rely on homomorphic encryption to make sure that we can actually compute on encrypted data in a semantically secure way.
+
+Now that the components are laid out, we shall go on to describe, very globally, the workings of Goldwasser's reusable garbled circuits.
+As mentioned, we use fully homomorphic encryption (FHE) in order to compute on encrypted data.
+The security of FHE guarantees no information leaks on the input $x$, therefore providing the input privacy that we need.
+We now use a functional encryption scheme using FHE to compute functions $f$ on given input.
+Still lacking is the ability to provide circuit privacy.
+In Goldwasser's scheme, this is accomplished by garbling circuit $C$ using a semantically secure encryption scheme in combination with said functional encryption scheme.
+This yields the garbled circuit $U$ and a secret key for $U$ such that given $sk$ and $x$, U will decrypt $C$ and yields $C(x)$.
+In this scheme, we can reuse the circuit for a polynomial amount of inputs.
+
+For a precise definition of the functional encryption scheme used and the reusable garbled circuit that follows we refer the reader to Goldwasser's excellent paper; this section was only intended as a global overview.
+
+In a cloud setting we can think of several services being given keys for functions corresponding to the service they provide.
+All these services could operate on any data encrypted with $mpk$, regardless of origin.
+One such service might provide search functionality, as described in the previous section.
+Another might provide some consistency check of the underlying plaintext data.
+
 % Only store encrypted data, Let clients perform crypto so it can be validated externally
 % \cite{kamara2010cryptographic}
 
 % Homomorphic encryption,
 % Searching in encrypted data \cite{harrower2009searching, li2010fuzzy}
+
 
 \section{Technical analysis}
 \label{sec:technical_analysis}
