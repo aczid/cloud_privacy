@@ -38,19 +38,50 @@ If any central component of cloud infrastructure were to be compromised it could
 In this paper we will go over some of the potential and actual privacy-related problems we have encountered as part of our study on the technical and legal domains of cloud computing. Starting off, in \autoref{sec:problems_in_cloud_computing} we shall give a fairly broad overview of the issues involved with cloud computing.
 This will lead into an analysis of the current legal situation regarding cloud computing in \autoref{sec:legal_analysis}. In \autoref{sec:pet} and \autoref{sec:technical_analysis} we will go over the technical situation, specifically describing some of the solutions to privacy-related problems in cloud computing by means of Privacy Enhancing Techologies (PETs).
 
-\section{Problems in cloud computing}
+\section{Privacy problems in cloud computing}
 \label{sec:problems_in_cloud_computing}
-General concerns with cloud security: centralisation, single point of failure, corporate espionage, subpoenas to the provider, impact of security compromises
+%General concerns with cloud security: centralisation, single point of failure, corporate espionage, subpoenas to the provider, impact of security compromises
+%In the multi-layered design of cloud-based infrastructure our privacy concerns are mostly contained within individual layers.
+
+While centralization of infrastructure should generally imply better basic physical and network security, it may lead to greater fragility of the networked ecosystem as a whole, whereby attacks become more impactful than in a strictly distributed environment.
+Consider how acts of, for example, espionage, terrorism or surveillance would be more effective when carried out against the central node in a star-shaped network rather than anywhere in a well-connected network.
+
+For better privacy protection there should exist many small nodes with physical separation, in fact we want to have more connection points into the network than the adversary can conceivably take over.
+Some systems may appear to be more (logically) distributed than they actually (physically) are. 
+
+Remotely hosted applications come with the inherent problem that their behaviour can be more difficult to analyse in order asses their security/privacy.
+Whereas with personal computing the integrity of the system could be verified all the way down to the hardware level, the cloud environment requires trust in providers' ability to adequately handle privacy-sensitive information.
+The problem is exacerbated by the fact that virtualization technologies abstract systems from the hardware layer, and require systems built upon them to similarly trust this technology during computation.
+And again there is centralization in these technologies, leading to concerns about (virtually) universal backdoors in all systems built upon a handful of such technologies.
 \cite{chow2009controlling}
 
-We want to cover either of these two cases:
+%We want to cover either of these two cases:
 
-\subsection{Problem case summary: Doe vs Ashcroft}
-Summary of the story of an ISP that got a NSL - and what an NSL actually demands
-\cite{garlinger2009privacy, gorham2008national}
+% Dit heeft eigenlijk niks met cloud privacy te maken... NSLs mogen alleen transactionele data opvragen
+%\subsection{Problem case summary: Doe vs Ashcroft}
+%In the United States there exists an investigative tool
+%An investigative tool for intelligence agencies like the FBI known to be in use since 1978 is the National Security Letter (NSL): a demand letter for transactional records, accompanied by an indefinite gag order forbidding disclosure of the demand.
+%Summary of the story of an ISP that got a NSL - and what an NSL actually demands
+%\cite{garlinger2009privacy, gorham2008national}
 
-\subsection{Problem case summary: Cyberlocker raids}
-How cloud providers are being held accountable for the content they host
+%\subsection{Problem case summary: Cyberlocker raids}
+%How cloud providers are being held accountable for the content they host
+
+\subsection{The dawn of personal cloud storage privacy}
+% TODO how many providers to list?
+Cloud providers like MediaFire, 4shared and the former MegaUpload provide a personal storage platform through the web for file sharing and archiving, be it public or private.
+Such services have become popular over the past decade or so, to the point where they can be considered ubiquitous.
+The larger of these websites have in fact become so popular that they are in the lead for most visited sites and are among the most significant global internet bandwidth users.
+
+Sharing services like these are known to be used as trafficking vehicles for pirated copyrighted media as they can provide free storage in a way that in most cases can be used anonymously, and can even generate profit for the uploader.
+One of such companies was the former MegaUpload: a company which had its assets seized by the United States Department of Justice in early 2012 on claims of illegal file sharing activity, in what is still unfolding as a particularly complex legal case.
+
+%Given the fact that MegaUpload had a policy of only storing popular content for any extended period of time, casual non-pirating users 
+
+The company has since reinvented itself as MEGA, providing the same services but boasting better privacy and security by using cryptographic methods to mask the stored data.
+Following the legal prosecution, other companies like Ciphercloud have also brought forth solutions to similar concerns.
+We have decided to analyse the security of MEGA's design in Section~\autoref{sec:cyberlocker}.
+
 
 \section{Legal analysis}
 \label{sec:legal_analysis}
@@ -118,7 +149,7 @@ Security considerations in cloud infrastructure
 Summary of techniques for security, focussing on Confidentiality and Integrity as we know them from general computing
 
 %\subsection{Hypervisor security}
-``Reflections on Trusting Trust'' by Kevin Thompson \cite{thompson1984reflections}
+%``Reflections on Trusting Trust'' by Kevin Thompson \cite{thompson1984reflections}
 
 Hardware backdoors \cite{sparks2009chipset, duflot2010limits}
 
@@ -126,6 +157,7 @@ Reverse engineering requirement
 \cite{rutkowska2008bluepilling}
 
 \subsection{Case study: private cyberlocker}
+\label{sec:cyberloker}
 How MEGA/Megaupload tried to cover themselves (and to a lesser extent their users) from the burden of accountability for the data they host
 
 Our ideas to keep private data private in cloud storage without sacrificing de-duplication
