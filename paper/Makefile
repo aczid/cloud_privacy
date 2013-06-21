@@ -12,7 +12,7 @@ build: *.tex ${BIBDIR}/${BIBFILE}.bib
 	bibtex ${TMPDIR}/${FILENAME}.aux
 	pdflatex ${FLAGS} ${FILENAME}.tex
 	pdflatex ${FLAGS} ${FILENAME}.tex
-	mv -f ${TMPDIR}/${FILENAME}.pdf ${SRCDIR}/
+	cp ${TMPDIR}/${FILENAME}.pdf ${SRCDIR}/
 
 clean:
 	rm -rf ${TMPDIR}
