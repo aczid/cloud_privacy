@@ -187,10 +187,13 @@ In this scheme, we can reuse the circuit for a polynomial amount of inputs.
 
 For a precise definition of the functional encryption scheme used and the reusable garbled circuit that follows we refer the reader to Goldwasser's excellent paper; this section was only intended as a global overview.
 
+Given such a scheme as this, how does it apply to our particular use case?
 In a cloud setting we can think of several services being given keys for functions corresponding to the service they provide.
-All these services could operate on any data encrypted with $mpk$, regardless of origin.
-One such service might provide search functionality, as described in the previous section.
-Another might provide some consistency check of the underlying plaintext data.
+All these services could operate on any data encrypted with the master public key, regardless of origin.
+One such service might provide search functionality, as described in the previous section;
+another might provide some consistency check of the underlying plaintext data;
+yet another may generate statistics over some collection of encrypted data.
+
 
 
 \section{Technical analysis}
