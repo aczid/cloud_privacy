@@ -77,7 +77,7 @@ Sharing services like these are known to be used as trafficking vehicles for pir
 One of such companies was the former MegaUpload: a company which had its assets seized by the United States Department of Justice in early 2012 on claims of illegal file sharing activity, in what is still unfolding as a particularly complex legal case.
 The company has since reinvented itself as MEGA, providing the same services but boasting better privacy and security by using cryptographic methods to mask the stored data.
 Following the (foreseen) legal prosecution, other companies like Ciphercloud and SpiderOak have also brought forth solutions to similar concerns.
-While MEGA and SpiderOak seem to have taken a cue from the cryptography community and chose to be open about their design to their users, Ciphercloud have recently become the center of controversy after they tried to file a DMCA takedown notice against a StackExchange thread in which their cryptography was analyzed and consequently decimated.
+While MEGA and SpiderOak seem to have taken a cue from the cryptography community and chose to be open about their design to their users, Ciphercloud have recently become the center of controversy after they tried to file a DMCA takedown notice against a StackExchange thread in which their cryptography was analyzed and consequently decimated~\cite{ciphercloud}.
 % TODO source ciphercloud
 Given the lack of provided open-source implementations, it still seems the cryptography argument is a bit of a hand-wave.
 We have decided to summarize some issues regarding these new designs in \autoref{sec:cyberlocker}.
@@ -224,11 +224,15 @@ We tried to find out what we can from public sources about two newcomers to the 
 %In the market of so-called `cyberlocker' sites most don't use (or boast) any privacy enhancing technologies, and  those that do are not always open about their workings.
 MEGA and SpiderOak are both open about the fact that they make use of a layered approach whereby files are encrypted with strong random passwords, which are then encrypted by a single master password associated to the user.
 Assuming the underlying cipher and random generation algorithms are implemented in a cryptographically secure way such a scheme seems quite secure: neither the files nor their keys ever reach the server in the plain.
-Their approaches diverge when it comes to application delivery: where MEGA opted for in-browser delivery of content over the HTTPS channel SpiderOak chose to draft a native application its service to better ensure application integrity (as it runs in a separate context).
+Their approaches diverge when it comes to application delivery: where MEGA opted for in-browser delivery of content over the HTTPS channel SpiderOak chose to draft a native application for its service to better ensure application integrity (as it runs in a separate context).
 
 The SpiderOak client so far remains a closed-source application, but at least its code and behaviour can be audited and validated using traditional means in contrast to MEGAs due to their choice of the web browser as a code delivery environment, which is much more tamper-prone due to its intended malleability by add-ons.
 An adversary that could manage to infect our browser through a malicious add-on (which is more likely to happen than infecting the host) would be able to intercept and modify our entire interaction with the MEGA service.
 
+Both of these services offer de-duplication, but SpiderOak makes sure to point out it doesn't do so across users because they apply \textit{personal encryption} to each file.
+As we understand it, this also describes MEGAs scheme: neither can do secure de-duplication across users without linking users to content, and therefore avoid doing so.
+
+But if MEGA truly has no idea of what users upload to their service, how should we read the headline ``Kim Dotcom Pulls 3D Printed Gun Plans from MEGA''~\cite{3d_gun}.
 
 %\subsection{Past attacks}
 %Past security vulnerabilities (that threaten privacy)
