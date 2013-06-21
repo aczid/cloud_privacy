@@ -110,7 +110,16 @@ Note, however, that this regulation is still under review and thus subject to ch
 Complementary to the Data Protection Directive is the E-privacy Directive (Directive on Privacy and Electronic Communications), which also protects citizens from excessive data retention, spam e-mail and the use of tracking cookies without explicit consent.
 This document spawned the much-debated ``Cookie law'' (Cookiewet) in the Netherlands.
 
-In a cloud computing setting, the main legal problems boil down to two issues: accountability of non-EU companies and multi-tenancy of cloud applications.
+In a cloud computing setting, the main legal problems boil down to two issues: accountability of non-EU companies and multi-tenancy of cloud applications. Essentially, the problems emerge from different users belonging to different jurisdicitions using a system that is possibly in yet another jurisdiction. Try enforcing anything when the user lives in Europe, accessing an Asian server of an American company. Problems aplenty.
+
+The type of cloud system, i.e., ``the X in XaaS'', also has its part to play in the legal setting of cloud computing.
+From IaaS (infrastructure) to SaaS (software), the responsibilities concerning privacy of provider and client change.
+In an IaaS setting, the provider can only do so much to provide privacy safeguards.
+The responsibilities lie primarily in providing availability of the infrastructure as well as providing hypervisor and physical security.
+The client, however is responsible for building secure applications or platforms on top of this infrastructure.
+In a SaaS setting, the provider needs to provide more guarantees.
+A user needs to be sure that the software is adequately secured on infrastructure, platform and software level.
+Obviously, in the PaaS setting the responsibilities lie somewhere halfway between IaaS and SaaS. The provider needs to provide a secure platform but it is the client's job to provide the necessary safeguards for any application built on top of this platform.
 % Explain
 
 % Auditing standards and the fact that no practical baseline audit standards are mandated by relevant law
@@ -118,7 +127,6 @@ In a cloud computing setting, the main legal problems boil down to two issues: a
 As a side note, the United States Department of Commerce has worked with the EU to develop the Data Protection Directive principles into what they call ``Safe Harbor'' principles which US companies can opt-in to.
 This essentially allowed US companies to do business with the EU, which has the more stringent data protection legislation.
 Also, the Digital Millennium Copyright Act (DMCA) recognizes the concept of a ``mere conduit'' (of information) as did the European Data Protection Directive. \cite{congress1998digital}
-
 
 % In hindsight, doing contract law was probably a bad idea, except for the auditing standards mentioned above..
 % \subsection{Contract law}
@@ -129,8 +137,6 @@ Also, the Digital Millennium Copyright Act (DMCA) recognizes the concept of a ``
 
 %\subsection{Case law}
 %Lindqvist case
-
-\subsection{Legal responsibilities}
 
 % Legal responsibilities as a function of the type of cloud architecture (see slides for the idea)
 
