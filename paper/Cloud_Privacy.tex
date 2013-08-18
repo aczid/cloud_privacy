@@ -20,12 +20,10 @@
 \author{Erik Boss \and Aram Verstegen}
 %\institute{Radboud Universiteit Nijmegen}
 \date{\today}
-\abstract{We review our concerns for observed and potential privacy risks associated with cloud computing in a broad sense. We summarize the positive and negative aspects regarding security, the legal aspects concerning data protection and the state of affairs with regard to personal cloud storage services (so-called `cyberlockers' and their privacy protection technologies. We end with a summary of two related and applicable privacy-enhancing technologies uncovered in our literature study, and give our reflection on the perceived state of affairs as a conclusion to the study.}
-
 \maketitle
 
-%\begin{abstract}
-%\end{abstract}
+\abstract{We review our concerns for observed and potential privacy risks associated with cloud computing in a broad sense. We summarize the positive and negative aspects regarding security, the legal aspects concerning data protection and the state of affairs with regard to personal cloud storage services (so-called `cyberlockers') and their privacy protection technologies.
+We end with a summary of two related and applicable privacy-enhancing technologies uncovered in our literature study, and give our reflection on the perceived state of affairs as a conclusion to the study.}
 
 \section{Introduction}
 In recent years there has been a lot of positive buzz surrounding the idea of \textit{cloud computing}: a systems design trend that allows applications to run as ubiquitous services by providing abstractions to the lower layers of application architecture.
@@ -35,7 +33,7 @@ Such abstractions bring benefits like implicit redundancy, centralized security 
 That being said, there is also a note of concern with things like centralized information management, giving up physical segregation for logical segregation, near-infinite storage capacity, cheap, ubiquitous computing power and the legal issues surrounding information processing systems whose infrastructure scale transcends national borders.
 
 In cloud computing it's apparent that there is a very strong connection between security and privacy.
-If any central component of cloud infrastructure were to be compromised it could almost certainly be used to disclose very privacy-sensitive information, given the scale of cloud infrastructure providers and what kind of private information is (or can be) recorded using applications running ``in the cloud''. In fact, there is no proof or technically feasible way to prove that such a compromise hasn't occurred.
+If any central component of cloud infrastructure were to be compromised it could almost certainly be used to disclose very privacy-sensitive information, given the scale of cloud infrastructure providers and what kind of private information is (or can be) recorded using applications running ``in the cloud''. In fact, there is no proof or technically feasible way to prove that such a compromise has not occurred.
 
 In this paper we will go over some of the potential and actual privacy-related problems we have encountered as part of our study on the technical and legal domains of cloud computing. Starting off, in \autoref{sec:problems_in_cloud_computing} we shall give a fairly broad overview of the issues involved with cloud computing.
 This will lead into an analysis of the current legal situation regarding cloud computing in \autoref{sec:legal_analysis}. In \autoref{sec:pet} and \autoref{sec:technical_analysis} we will go over the technical situation, specifically describing some of the solutions to privacy-related problems in cloud computing by means of Privacy Enhancing Techologies (PETs).
@@ -116,10 +114,10 @@ In an IaaS setting, the provider can only do so much to provide privacy safeguar
 The responsibilities lie primarily in providing availability of the infrastructure as well as providing hypervisor and physical security.
 The client, however is responsible for building secure applications or platforms on top of this infrastructure.
 In a SaaS setting, the provider needs to provide more guarantees.
-A user needs to be sure that the software is adequately secured on infrastructure, platform and software level.
+That is, a user needs to be sure that the software is adequately secured on infrastructure, platform and software level.
 Obviously, in the PaaS setting the responsibilities lie somewhere halfway between IaaS and SaaS. The provider needs to provide a secure platform but it is the client's job to provide the necessary safeguards for any application built on top of this platform.
 
-We like to note that, when applying the sort of the solutions we describe in \autoref{sec:pet} we process significantly less personal data. Say, for instance, that we have a situation in which we want to search in a database. Now, if we apply techniques to search using encrypted queries in an encrypted database, we stop processing any personal data that is not linked to the communications protocol (like IP addresses). Such techniques, are in a way a win-win solution. They reduce liability risks for providers and provide privacy for users.
+We like to note that when applying the sort of the solutions we describe in \autoref{sec:pet} we process significantly less personal data. Say, for instance, that we have a situation in which we want to search in a database. Now, if we apply techniques to search using encrypted queries in an encrypted database, we stop processing any personal data that is not linked to the communications protocol (like IP addresses). Such techniques, are in a way a win-win solution. They reduce liability risks for providers and provide privacy for users.
 
 As a side note, the United States Department of Commerce has worked with the EU to develop the Data Protection Directive principles into what they call ``Safe Harbor'' principles which US companies can opt-in to.
 This essentially allowed US companies to do business with the EU, which has the more stringent data protection legislation.
@@ -163,17 +161,18 @@ Even after the new legislation comes into effect, the PATRIOT act~\cite{mailman2
 Following the disturbance in the cyberlocker ecosystem following the seizure of MegaUpload there has been growing interest in secure private cyberlocker services.
 This seems like a win-win situation for privacy: the cyberlocker sites have plausible deniability with respect to the content they are hosting, and their users can feel secure about their data privacy.
 We must ask ourselves why there is no true openness from any such providers of note to be found in the literature or when surfing the web. \cite{borgmann2012security}
-We tried to find out what we can from public sources about two newcomers to the scene.
+We have, however, tried to find out what we can from public sources about two newcomers to the scene.
 
 %In the market of so-called `cyberlocker' sites most don't use (or boast) any privacy enhancing technologies, and  those that do are not always open about their workings.
-MEGA and SpiderOak are both open about the fact that they make use of a layered approach whereby files are encrypted with strong random passwords, which are then encrypted by a single master password associated to the user.
+MEGA and SpiderOak are both open about the fact that they make use of a layered approach whereby files are encrypted with strong random passwords, which are then encrypted by a single master password associated with the user.
 Assuming the underlying cipher and random generation algorithms are implemented in a cryptographically secure way such a scheme seems quite secure: neither the files nor their keys ever reach the server in the plain.
 Their approaches diverge when it comes to application delivery: where MEGA opted for in-browser delivery of content over the HTTPS channel SpiderOak chose to draft a native application for its service to better ensure application integrity (as it runs in a separate context).
 
-The SpiderOak client so far remains a closed-source application, but at least its code and behaviour can be audited and validated using traditional means in contrast to MEGAs due to their choice of the web browser as a code delivery environment, which is much more tamper-prone due to its intended malleability by add-ons.
+The SpiderOak client so far remains a closed-source application, but at least its code and behaviour can be audited and validated using traditional means.
+Compare this to MEGAs due to their choice of the web browser as a code delivery environment, which is much more tamper-prone due to its intended malleability by add-ons.
 An adversary that could manage to infect our browser through a malicious add-on (which is more likely to happen than infecting the host) would be able to intercept and modify our entire interaction with the MEGA service.
 
-Both of these services offer de-duplication, but SpiderOak makes sure to point out it doesn't do so across users because they apply \textit{personal encryption} to each file.
+Both of these services offer de-duplication, but SpiderOak makes sure to point out it does not do so across users because they apply \textit{personal encryption} to each file.
 As we understand it, this also describes MEGAs scheme: neither can do secure de-duplication across users without linking users to content, and therefore avoid doing so.
 
 But if MEGA truly has no idea of what users upload to their service, how should we read the headline ``Kim Dotcom Pulls 3D Printed Gun Plans from MEGA''~\cite{3d_gun}.
@@ -186,7 +185,7 @@ But if MEGA truly has no idea of what users upload to their service, how should 
 \label{sec:pet}
 
 Certain recent technologies provide ways to interface with cloud services with some measure of privacy.
-Two of these privacy-enhancing technologies are \emph{search under encryption} and \emph{reusable garbled secrets through function encryption}.
+Two of these privacy-enhancing technologies are \emph{search under encryption} and \emph{reusable garbled secrets through functional encryption}.
 Both come from the realm of cryptography and it should be noted that it is likely that encryption is never enough to provide privacy in the general case of cloud applications \cite{van2010impossibility}.
 However, we feel that these two technologies can help in protecting the privacy of the user of cloud services.
 
@@ -206,7 +205,7 @@ The PEKS encryption works by having a separate keypair for each word $w$, the to
 Finally, if Alice wants to query the message database, she constructs a trapdoor which is simply the private key corresponding with the word $w$ the wants to query for.
 An algorithm that tests for the existence of the keyword gets such a tuple and a trapdoor and attempts to decrypt the second part of the tuple using the trapdoor until the decryption matches the first element of the tuple.
 If this happens for a word belonging to a message, the message contains the word. 
-In this, slightly simplified, version of the scheme, we cannot guarantee chosen-ciphertext security although modified versions may.
+In this, slightly simplified, version of the scheme, we cannot guarantee chosen-ciphertext security although modified versions may actually provide such a guarantee.
 Also, performance is quite bad due to the massive amounts of public key operations (and even generation) going on in this scheme.
 
 Note that Boneh would go on to provide some better solutions in \cite{boneh2007public}, but we shall not discuss those here.
@@ -258,20 +257,18 @@ One such service might provide search functionality, as described in the previou
 another might provide some consistency check of the underlying plaintext data;
 yet another may generate statistics over some collection of encrypted data.
 
-
-
 \section{Conclusion}
 
 Cloud computing is still becoming increasingly more popular and thus making sure we ``do it right'' becomes more important as well.
-In this paper we have attempted to provide an overview of the problems, both legal and technical, surrounding privacy and cloud comupting as well as an overview of the current situation with modern cloud providers.
-Furthemore, we have described two privacy-enhancing technologies, searchable encryption and reusable garbled circuits.
+In this paper we have attempted to provide an overview of the problems, both legal and technical, surrounding privacy and cloud computing as well as an overview of the current situation with modern cloud providers.
+Furthermore, we have described two privacy-enhancing technologies, searchable encryption and reusable garbled circuits.
 The latter being a very generic approach to applying functions to encrypted data, the former being a solution to a specific problem, i.e., searching encrypted data.
 At the time of writing this paper, both solutions are likely infeasible to implement on any serious scale due to the performance issues associated with them.
 However, we can hope that Moore's law in combination with bleeding-edge research can alleviate this pain some time in the future.
 
 On a more personal note, we feel that the legal framework in Europe, especially considering the new and improved data protection regulation, is among the best in the world. We hope that sanity prevails in the face of over 2000 amendments to said regulation.
 
-All that said, we conclude in repeating that doing cloud computing privacy right is very, very important lest we succumb to the general notion that privacy is dead. It does not have to be.
+Concluding, we like to emphasize through repetition that doing cloud computing privacy right is very, very important lest we succumb to the generally upheld belief that privacy is dead. \textbf{It does not have to be}.
 
 %\section{References}
 
