@@ -463,7 +463,12 @@ Instead, we refer the reader to~\cite{vaikuntanathan2011computing} for a more co
 What we shall do is to provide a more general overview of what FHE entails and what its properties generally are.
 For the sake of consistency with the next section we shall use the definitions and notation from~\cite{goldwasser2013reusable}, which are in turn adapted from~\cite{vaikuntanathan2011computing}.
 
-We can define FHE scheme as a quadruple of polynomial time algorithms $(\op{FHE.KeyGen}, \op{FHE.Enc}, \op{FHE.Dec}, \op{FHE.Eval})$:
+We can define FHE scheme as a quadruple of polynomial time algorithms 
+\[
+    (\op{FHE.KeyGen}, \op{FHE.Enc}, \op{FHE.Dec}, \op{FHE.Eval})
+\]
+
+They are defined as follows:
 
 \begin{enumerate}
     \item $\op{FHE.KeyGen}(1^k)$: A probabilistic algorithm that given security parameter $k$, outputs public/private keypair $pk/sk$;
