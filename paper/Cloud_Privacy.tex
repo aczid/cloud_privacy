@@ -9,10 +9,14 @@
 \usepackage{sidecap}
 \usepackage{epstopdf}
 
+\usepackage{amsmath}
+
 %\def\bibfont{\scriptsize}
 
 \usepackage{natbib}
 \setlength{\bibsep}{0.0pt}
+
+\newcommand{\op}[1]{\operatorname{#1}}
 
 \begin{document}
 \title{Privacy in Cloud Computing}
@@ -253,40 +257,110 @@ Even after the new legislation comes into effect, the PATRIOT act~\cite{mailman2
 \section{Privacy-Enhancing Technologies}
 \label{sec:pet}
 
-Literature suggests a few alternatives to placing trust in a single third party, such as:
-\begin{itemize}
-\item \textit{server-aided cryptography}, where a third party server does some `heavy lifting' for its clients without having access to their secrets;
-\item the as of yet underdeveloped notion of \textit{information-centric security}, where data is self-describing and self-defending, regardless of the context; \cite{chow2009controlling}
-\item establishing trust by \textit{consensus} among a number of peers;
-\item the still-developing field of \textit{Fully Homomorphic Encryption}, which would allow computations to be applied to data that \textit{remains under encryption}.
-\end{itemize}
+Legal solutions as we studied in the previous section do not actually solve our biggest problem. 
+They do not aid us in protecting our data, and thus our privacy, from potentially malicious third parties. 
+What we need are systems that give guarantees about the privacy of our data even in a setting with a hostile third party. 
+The most obvious, and probably even the only, solution is to make sure that even the cloud provider cannot, by any interal means, access the data. 
+If the cloud provider cannot do so, we also prevent mass privacy violations by parties using the cloud providers access, whether they be governmental or criminal in nature. 
+In this section we shall attempt to describe a few ways in which to accomplish this to some degree for some applications. 
+In particular we shall discuss searchable encryption (SE), fully homomorphic encryption (FHE) and functional encryption (FE). 
+Note that we shall not attempt to describe any given concept with the greatest level of (mathematical) detail, instead we shall focus on supplying the intuition for how we can use these technologies to aid in our endeavour to make clouding computing more friendly to our privacy.
 
-Certain recent technologies provide ways to interface with cloud services with some measure of privacy.
-Two of these privacy-enhancing technologies are \emph{search under encryption} and \emph{reusable garbled secrets through functional encryption}.
-Both come from the realm of cryptography and it should be noted that it is likely that encryption is never enough to provide privacy in the general case of cloud applications \cite{van2010impossibility}.
-However, we feel that these two technologies can help in protecting the privacy of the user of cloud services.
+Before we discuss the mentioned technologies it is import to note that the application of cryptography to provide privacy may not be generally feasible in a cloud setting. 
+Van Dijk and Juels~\cite{van2010impossibility} formally defined a class hierarchy for cloud applications and went on to prove that for two out of three, even powerful primitives such as fully homomorphic encryption, are not enough to provide privacy. 
+They considered three classes of cloud applications, namely
+
+\begin{enumerate}
+    \item Private single-client computing, computation on data of a client such that only this client can learn the output;
+    \item Private multi-client computing, computation on data of multiple clients such that the output may be selectively learned only by certain clients using some form of access control;
+    \item Stateful multi-client computing, similar to private multi-client computing except that the access control policy depends on previous application execution.
+\end{enumerate}
+
+Note that this last class actually contains a great many typical cloud applications, e.g., social networks. 
+Therefore the result that neither the second nor the third class actually realizes privacy in the general sense is quite important; some form of trusted state or execution is always required in those two classes.
+We do feel, however, that even in the face of such a result the study of the techniques in the next few sections is worthwhile and useful because they can provide privacy in specific applications and use cases.
+In a sense, the result is also quite reassuring, i.e., as long as data need not be shared among clients it is indeed very possible to get privacy using more general methods like FHE.
+
+% Literature suggests a few alternatives to placing trust in a single third party, such as:
+% \begin{itemize}
+% \item \textit{server-aided cryptography}, where a third party server does some `heavy lifting' for its clients without having access to their secrets;
+% \item the as of yet underdeveloped notion of \textit{information-centric security}, where data is self-describing and self-defending, regardless of the context; \cite{chow2009controlling}
+% \item establishing trust by \textit{consensus} among a number of peers;
+% \item the still-developing field of \textit{Fully Homomorphic Encryption}, which would allow computations to be applied to data that \textit{remains under encryption}.
+% \end{itemize}
+
+% Certain recent technologies provide ways to interface with cloud services with some measure of privacy.
+% Two of these privacy-enhancing technologies are \emph{search under encryption} and \emph{reusable garbled secrets through functional encryption}.
+% Both come from the realm of cryptography and it should be noted that it is likely that encryption is never enough to provide privacy in the general case of cloud applications \cite{van2010impossibility}.
+% However, we feel that these two technologies can help in protecting the privacy of the user of cloud services.
 
 \subsection{Searchable Encryption}
 
-One application of particular interest in cloud computing setting is that of search.
-It is not hard to imagine that, in a world where we store more and more data in the cloud, we would like good, secure and safe ways to search through said data.
+One application of particular interest in a cloud computing setting is that of searching through data.
+It is not hard to imagine that, in a world where we store more and more data in the cloud, we would like good and secure ways to search through said data.
 However, we may not trust the cloud provider with knowing what we are searching for nor what sort of data is stored.
 Enter searchable encryption, a scheme where both the stored data and the queries are kept secret.
-In this section, we shall describe a fairly simple system of searchable encryption as devised by Boneh \cite{boneh2004public} called Public-Key Encryption with Keyword Search (PEKS).
+In this section, we shall first describe a fairly simple system of searchable encryption as devised by Boneh~\cite{boneh2004public} called Public-Key Encryption with Keyword Search (PEKS).
 
-Conceptually, PEKS is very simple:
-Say people send Alice messages that are stored in some database.
-These messages are constructed as follows:
-given an encrypted message $msg$ containing words $w \in msg$, append to the encryption of $msg$ the PEKS encryptions of $w$ under the public key of the Alice.
-The PEKS encryption works by having a separate keypair for each word $w$, the total of all of the public keys form the final public key of Alice, and the total of the private keys  from the final private key in the same manner. The encryption then returns a tuple containing some random value $M$ and the encryption of $M$ under the private key corresponding to $w$.
-Finally, if Alice wants to query the message database, she constructs a trapdoor which is simply the private key corresponding with the word $w$ the wants to query for.
-An algorithm that tests for the existence of the keyword gets such a tuple and a trapdoor and attempts to decrypt the second part of the tuple using the trapdoor until the decryption matches the first element of the tuple.
-If this happens for a word belonging to a message, the message contains the word. 
-In this, slightly simplified, version of the scheme, we cannot guarantee chosen-ciphertext security although modified versions may actually provide such a guarantee.
-Also, performance is quite bad due to the massive amounts of public key operations (and even generation) going on in this scheme.
+Boneh describes the system in specific, but easily generalizable, setting, i.e., the routing of encrypted e-mail messages depending on the occurrence of certain keywords in this message. 
+The goal is to test whether a keyword occurs in a message without learning any other information about the message.
+Note that such a goal can conceivably be achieved using the functional encryption scheme that we shall later discuss but we do not necessarily need the full power of such a scheme for this relatively simple goal. This scenario, when storing the encrypted mail on an IMAP server, is analogous to a cloud provider storing such messages.
 
-Note that Boneh would go on to provide some better solutions in \cite{boneh2007public}, but we shall not discuss those here.
-Also, research has been done \cite{li2010fuzzy} on providing fuzzy keyword searching, i.e., when searching for ``foo'' we actually want to search for all keywords corresponding to ``*f*o*o*'', where * is the wildcard character.
+The scheme is, conceptually at least, not very complicated. Let us say $B$ wants to send $A$ an encrypted message using the PEKS scheme. The message would look like this:
+\[
+    \left[ E_{A_{pub}}(m), \op{PEKS}(A_{pub}, W_1), \dots, \op{PEKS}(A_{pub}, W_k) \right]
+\]
+where $A_{pub}$ is $A$'s public key, $m$ is the message $E_k(m)$ is the encryption of $m$ under $k$, PEKS is the algorithm that provides searchable encryption and $W_1, \dots, W_k$ are the keywords associated with $m$.
+
+For the scheme to work we need the following four algorithms:
+\begin{itemize}
+    \item $\op{KeyGen}(s)$: Generates public/private keypair $(A_{pub}, A_{priv})$ given security parameter $s$;
+    \item $\op{PEKS}(A_{pub},W)$: Given the public key and a word $W$, provide a searchable encryption of $W$;
+    \item $\op{Trapdoor}(A_{priv},W)$: Produce a trapdoor for $W$ given the private key and a word $W$;
+    \item $\op{Test}(A_{pub},S,T_W)$: Given the public key, a searchable encryption $S = \op{PEKS}(A_{pub}, W')$ and the trapdoor $T = \op{Trapdoor}(A_{priv}, W)$, test whether $W = W'$ and output 'yes' or 'no' accordingly.
+\end{itemize}
+
+A query would then consist of sending a trapdoor of a message to the server and this server could then, given the existence of the Test algorithm, return all messages containing this keyword.
+Boneh notes that this scheme, as is, is semantically secure against an adaptive chosen keyword attack but not against a chosen ciphertext attack.
+It can, however, be adapted to provide such a guarantee.
+
+It turns out that we can construct these four algorithms using any trapdoor permutation (other constructions are given, but we shall forego those). 
+We need two guarantees: a polynomially bounded number of keywords and an encryption system that is source-indistinguishable, i.e., it is computationally hard to determine with which key a given ciphertext was encrypted with. 
+In order to now construct the PEKS system we need to define the four algorithms in terms suitable to this particular construction, i.e., with trapdoor permutations and source-indistinguishability. 
+The algorithm can be constructed as follows, where $\Sigma$ is the family of keywords, polynomial in size:
+\begin{itemize}
+    \item $\op{KeyGen}$: Generate a public/private keypair $PK_W/Priv_W$ for each $W \in \Sigma$. The resulting public key $A_{pub}$ is $A_{pub} = \{ PK_W | W \in Sigma \}$;
+    \item $\op{PEKS}(A_{pub},W)$: Output $\op{PEKS}(A_{pub}, W) = (M, E_{PK_W}(M))$ for a randomly picked $M = {0,1}^s$;
+    \item $\op{Trapdoor}(A_{priv},W)$: Simply output $T_W = Priv_W$;
+    \item $\op{Test}(A_{pub},S,T_W)$: Test whether the decryption $D_{T_W}(S) = 0^s$ and output 'yes' or 'no' accordingly.
+\end{itemize}
+
+While this construction is very simple and generic in its application, we can do much better in terms of efficiency. 
+The fact that (seemingly) we require a very, very large public key is a detriment to the applicability of this scheme.
+However, if we use a more specific construction (or a more optimized version of the above) we can avoid this problem.
+In fact, in the very same paper Boneh explains a construction based on hash functions and bilinear maps that is much more efficient.
+
+Concerning searchable encryption, we can definitely see applications for such a system. 
+Given that it should be more efficient than, say, FHE we can probably use such a system for doing keyword searches in cloud-stored documents. 
+Note that this is a particular version of searchable encryption, for other situations we may want more specialized schemes, especially if we want to do complicated queries.
+Also, such a scheme as this exposes the access pattern of the user requesting the search, i.e., the provider may not learn the content of the messages but it can learn which messages are frequently accessed and so forth.
+A solution to this problem is given by Boneh in~\cite{boneh2007public}.
+In fact, Li~\cite{li2010fuzzy} argues that the fact that this scheme only provides exact-keyword search makes it unsuitable for cloud computing. 
+They go on to propose a system for doing fuzzy searches. This is, although quite a bit more fancy, necessarily more complex as well.
+
+% Conceptually, PEKS is very simple:
+% Say people send Alice messages that are stored in some database.
+% These messages are constructed as follows:
+% given an encrypted message $msg$ containing words $w \in msg$, append to the encryption of $msg$ the PEKS encryptions of $w$ under the public key of the Alice.
+% The PEKS encryption works by having a separate keypair for each word $w$, the total of all of the public keys form the final public key of Alice, and the total of the private keys  from the final private key in the same manner. The encryption then returns a tuple containing some random value $M$ and the encryption of $M$ under the private key corresponding to $w$.
+% Finally, if Alice wants to query the message database, she constructs a trapdoor which is simply the private key corresponding with the word $w$ the wants to query for.
+% An algorithm that tests for the existence of the keyword gets such a tuple and a trapdoor and attempts to decrypt the second part of the tuple using the trapdoor until the decryption matches the first element of the tuple.
+% If this happens for a word belonging to a message, the message contains the word. 
+% In this, slightly simplified, version of the scheme, we cannot guarantee chosen-ciphertext security although modified versions may actually provide such a guarantee.
+% Also, performance is quite bad due to the massive amounts of public key operations (and even generation) going on in this scheme.
+
+% Note that Boneh would go on to provide some better solutions in \cite{boneh2007public}, but we shall not discuss those here.
+% Also, research has been done \cite{li2010fuzzy} on providing fuzzy keyword searching, i.e., when searching for ``foo'' we actually want to search for all keywords corresponding to ``*f*o*o*'', where * is the wildcard character.
 
 
 % Only store encrypted data, Let clients perform crypto so it can be validated externally
