@@ -1,4 +1,4 @@
-\documentclass[12pt]{article}
+\documentclass[11pt]{article}
 \usepackage{enumitem}
 \usepackage{listings}
 \usepackage{color}
@@ -263,8 +263,8 @@ What we need are systems that give guarantees about the privacy of our data even
 The most obvious, and probably even the only, solution is to make sure that even the cloud provider cannot, by any interal means, access the data. 
 If the cloud provider cannot do so, we also prevent mass privacy violations by parties using the cloud providers access, whether they be governmental or criminal in nature. 
 In this section we shall attempt to describe a few ways in which to accomplish this to some degree for some applications. 
-In particular we shall discuss searchable encryption (SE), fully homomorphic encryption (FHE) and functional encryption (FE). 
-Note that we shall not attempt to describe any given concept with the greatest level of (mathematical) detail, instead we shall focus on supplying the intuition for how we can use these technologies to aid in our endeavour to make clouding computing more friendly to our privacy.
+In particular we shall discuss searchable encryption (SE), fully homomorphic encryption (FHE) and functional encryption (FE).
+Note that we shall not attempt to describe any given concept with the greatest level of (mathematical) detail, instead we shall focus on supplying the definitions and the intuition required for understanding how we can use these technologies to aid in our endeavour to make clouding computing more friendly to our privacy.
 
 Before we discuss the mentioned technologies it is import to note that the application of cryptography to provide privacy may not be generally feasible in a cloud setting. 
 Van Dijk and Juels~\cite{van2010impossibility} formally defined a class hierarchy for cloud applications and went on to prove that for two out of three, even powerful primitives such as fully homomorphic encryption, are not enough to provide privacy. 
@@ -368,6 +368,39 @@ They go on to propose a system for doing fuzzy searches. This is, although quite
 
 % Homomorphic encryption,
 % Searching in encrypted data \cite{harrower2009searching, li2010fuzzy}
+
+\subsection{Fully Homomorphic Encryption}
+
+We feel comfortable saying that fully homomorphic encryption (FHE) is one of the more interesting and promising advances in cryptography of the last decade. 
+It allows for performing complex dynamically-chosen computations on data while said data remains encrypted. 
+In the context of cloud computing, FHE is especially interesting.
+Take, for instance, one of the services a cloud provider might provide, namely the outsourcing of computational power.
+Using the ability to compute arbitrary functions over encrypted data allows one to use such external computation power without exposing what is being computed (and which data is used).
+It is important to note that at the time of writing efficient ways to implement an FHE scheme do not yet exist in any practical sense.
+However, progress is being made in this area.
+
+The first properly working construction of FHE is due to Gentry~\cite{gentry2009fully} in 2009, which also construed a blueprint of sorts for building a FHE system.
+A full, precise explanation of FHE as per Gentry's construction, or any of the later ones is truly outside the scope of this particular paper. 
+Instead, we refer the reader to~\cite{vaikuntanathan2011computing} for a more complete, but not to in-depth, overview of FHE and to~\cite{brakerski2012leveled} for a fairly recent construction of FHE that is not directly based on Gentry's original blueprint but on the (Ring) Learning with Errors problem. 
+What we shall do is to provide a more general overview of what FHE entails and what its properties generally are. 
+For the sake of consistency with the next section we shall use the definitions and notation from~\cite{goldwasser2013reusable}, which are in turn adapted from~\cite{vaikuntanathan2011computing}.
+
+We can define FHE scheme as a quadruple of polynomial time algorithms $(\op{FHE.KeyGen}, \op{FHE.Enc}, \op{FHE.Dec}, \op{FHE.Eval})$:
+
+\begin{enumerate}
+    \item $\op{FHE.KeyGen}(1^k)$: A probabilistic algorithm that given security parameter $k$, outputs public/private keypair $pk/sk$;
+    \item $\op{FHE.Enc}(pk, x \in \{0,1\}$: A probabilistic algorithm that given the public key and an input bit outputs ciphertext $\psi$;
+    \item $\op{FHE.Dec}(sk, \psi)$: A deterministic algorithm that given the secret key and a ciphertext outputs the message $x^* \in \{0,1\}$;
+    \item $\op{FHE.Eval}(pk, C, \psi_1, \psi_2, \dots, \psi_n)$: A deterministic algorithm that given the public key, a circuit taking $n$ bits as input and $n$ ciphertexts, outputs a ciphertext $\psi_C$.
+\end{enumerate}
+
+A construction of such a scheme is \emph{homomorphic} if given $\psi = \op{FHE.Eval}(pk, C, \psi_1, \dots, \psi_n)$ the chance that $\op{FHE.Dec}(sk, \psi) \neq C(\psi_1, \dots, \psi_n)$. 
+It is \emph{compact} if the output size of $\op{FHE.Eval}$ is at most polynomial in the security parameter $k$.
+The construction is fully homomorphic if for all arithmetic circuits $C$ over $GF(2)$ the scheme is both compact and homomorphic.
+
+The construction in the next chapter will use a \emph{leveled} FHE scheme. 
+Such a scheme is defined as an FHE scheme where $\op{FHE.KeyGen}$ takes a second parameters $1^d$ and the scheme is fully homomorphic for all $d$-depth arithmetic circuits over $GF(2)$. 
+We suppose, as per~\cite{vaikuntanathan2011computing}, that other types of circuits than arithmetic ones are possible, but for the sake of ease we shall not consider those.
 
 \subsection{Reusable Garbled Circuits}
 
