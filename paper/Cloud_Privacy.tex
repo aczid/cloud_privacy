@@ -22,8 +22,8 @@
 \date{\today}
 \maketitle
 
-\abstract{We review our concerns for observed and potential privacy risks associated with cloud computing in a broad sense. We summarize the positive and negative aspects regarding security, the legal aspects concerning data protection and the state of affairs with regard to personal cloud storage services (so-called `cyberlockers') and their privacy protection technologies.
-We end with a summary of two related and applicable privacy-enhancing technologies uncovered in our literature study, and give our reflection on the perceived state of affairs as a conclusion to the study.}
+\abstract{We summarize our concerns for observed and potential privacy risks associated with cloud computing in a broad sense, subsequently review the legal aspects concerning data protection from a European perspective, followed by a summary of two related and applicable privacy-enhancing technologies uncovered in our literature study, and conclude by reflecting on the state of affairs.}
+% TODO rewrite...
 
 \section{Introduction}
 In recent years there has been a lot of positive buzz surrounding the idea of \textit{cloud computing}: a systems design trend that allows applications to run as ubiquitous services by providing abstractions to the lower layers of application architecture.
@@ -33,10 +33,15 @@ Such abstractions bring benefits like implicit redundancy, centralized security 
 That being said, there is also a note of concern with things like centralized information management, giving up physical segregation for logical segregation, near-infinite storage capacity, cheap, ubiquitous computing power and the legal issues surrounding information processing systems whose infrastructure scale transcends national borders.
 
 In cloud computing it's apparent that there is a very strong connection between security and privacy.
-If any central component of cloud infrastructure were to be compromised it could almost certainly be used to disclose very privacy-sensitive information, given the scale of cloud infrastructure providers and what kind of private information is (or can be) recorded using applications running ``in the cloud''. In fact, there is no proof or technically feasible way to prove that such a compromise has not occurred.
+If any central component of cloud infrastructure were to be compromised it could almost certainly be used to disclose very privacy-sensitive information, given the scale of cloud infrastructure providers and what kind of private information is (or can be) recorded using applications running ``in the cloud''.
+In fact, there is no proof or technically feasible way to prove that such a compromise has not occurred already.
 
-In this paper we will go over some of the potential and actual privacy-related problems we have encountered as part of our study on the technical and legal domains of cloud computing. Starting off, in \autoref{sec:problems_in_cloud_computing} we shall give a fairly broad overview of the issues involved with cloud computing.
-This will lead into an analysis of the current legal situation regarding cloud computing in \autoref{sec:legal_analysis}. In \autoref{sec:pet} and \autoref{sec:technical_analysis} we will go over the technical situation, specifically describing some of the solutions to privacy-related problems in cloud computing by means of Privacy Enhancing Techologies (PETs).
+Some of these issues culminate in the recently much-publicised case of mass surveillance by the United States National Security Agency and its overseas partners.
+As more facts on this case are being made public we are better equipped to make informed choices in how we interact with the manifestations of this technology trend.
+We no longer need speculation on a worst-case estimate alone to build our adversary model, we now have concrete evidence that our data privacy and computational privacy are at risk.
+
+In this article we will go over some of the potential and actual privacy-related problems that we have encountered as part of our study on the technical and legal domains of cloud computing. Starting off, in \autoref{sec:problems_in_cloud_computing} we give a fairly broad overview of the privacy-related issues encountered within the cloud computing era.
+This will lead into an analysis of the current legal situation regarding cloud computing from a local perspective in \autoref{sec:legal_analysis}. In \autoref{sec:pet} we will go over the technical details and specifically describe some of the solutions to privacy-related problems in cloud computing by means of Privacy Enhancing Techologies (PETs). Finally we reflect on our findings and give concluding remarks in \autoref{sec:conclusion}.
 
 \section{Privacy problems in cloud computing}
 \label{sec:problems_in_cloud_computing}
@@ -49,12 +54,51 @@ There exists more redundancy in the more connected network, which helps make the
 %For a trustworthy internet we want to have more connection points into the network than the adversary can conceivably take over.
 %Some systems may appear to be more (logically) distributed than they actually (physically) are. 
 
-The main concern in related research is surrounding data privacy, but we find computational privacy to be of equal or greater concern.
-Remotely hosted applications come with the inherent problem that their behaviour can be more difficult to analyse in order asses their security and privacy safeguards.
-Whereas with personal computing the integrity of the system can be verified all the way down to the hardware level, the cloud environment requires trust in providers' ability to adequately handle privacy-sensitive information.
+\subsection{Third Parties}
+It seems to us the main privacy problem with the cloud paradigm is the trend all but forces users to relinquish control of previously self-hosted information to fewer and fewer third parties.
+%The infrastructure layer is at the bottom of the application stack, with platform and service layers respectively building upon that foundation.
+The competitive advantage achieved with scale allows a few key players to lead the Cloud market with an overwhelming majority.
+The IaaS market is dominated by Amazon who have a 35\% market share, their closest competitor is IBM with only a 5\% share.
+PaaS seems to be a more competitive field, with the top three players Salesforce, Amazon and Microsoft each taking roughly 15\% of the market.
+% TODO Cite http://www.telegeography.com/products/commsupdate/articles/2013/03/11/amazons-cloud-iaas-and-paas-investments-pay-off/
+SaaS is the most diversified layer in the cloud paradigm, the problems we see here are not in market share but in sheer scale.
+Large U.S.-based companies like Facebook, Twitter and Google openly construct behavioral profiles of their millions of `users' on behalf of their `clients' - and are severely treading on user privacy in the process.
+Google has announced their own `Compute Engine' IaaS service only last year, but we feel they have the capacity to oust Amazon from the leading position in the years to come.
+
+\subsection{Cause for Concern}
+Having only a few companies in physical possession of so much personal data is cause for concern in light of the aforementioned fragility that large, centralized information systems are susceptible to with regards to observation, manipulation or destruction of data.
+Of course these companies do not have a monolithic infrastructure behind their facade; but insiders, legally mandated government agents and clandestine intruders may (hypothetically) reach far into their systems and attain full access to any information stored there.
+
+In the light of recent revelations related to U.S. surveillance programmes, this appears to be much less hypothetical than we initially assumed.
+The expectation of privacy when dealing with such companies not only lacks a factual foundation to begin with, but now even the notional expectation of privacy has been severely diminished.
+At the risk of being cynical: the upshot here is that the public's perception of cloud-related privacy matters is more in line with reality now that they are better informed.
+
+
+\subsection{Computational Privacy?}
+%A first step in the right direction is to provide \textit{end-to-end encryption} for data in transit.
+We should discern the difference between privacy of \textit{data} and privacy in \textit{computation}.
+To illustrate: a data file with private information can be kept secret while hosted in `hostile territory' by means of conventional encryption schemes - provided the general cryptographic caveats like choice of cipher and operation mode, key generation/management/distribution et cetera are properly addressed - but the required encryption operations and the party that applies them must also operate \textit{consistently} for this scheme to be secure.
+%The main concern in related research is surrounding data privacy, but we find computational privacy to be of equal or greater concern.
+%Remotely hosted applications come with the inherent problem that their behaviour can be more difficult to analyse in order asses their security and privacy safeguards.
+
+Data privacy is something we as computer scientists understand well in terms of secrecy, but computational privacy has actually been dauntingly hard to make sense of to us - we see backdoors \emph{all the way down}.
+Whereas with personal computing the integrity of the system can be verified down to the hardware level - systems can be tested to confirm to the specifications using \textit{reverse engineering} methods on hardware and software and this can be validated externally, the cloud environment only allows the most cursory glance at the inner workings.
+%offers only a superficial analysis until we hit the Virtual Machine barrier; the VM actually functions as a `black box'.
+
 The problem is exacerbated by the fact that virtualization technologies abstract systems from the hardware layer, and require systems built upon them to similarly trust this technology during computation.
 And again there is centralization in these technologies, leading to concerns about (virtually) universal backdoors in all systems built upon a handful of such technologies.
-Literature suggests the as of yet underdeveloped notion of \textit{information-centric security}, where data is self-describing and self-defending, regardless of the context. \cite{chow2009controlling}
+
+\subsection{Formalisms and Philosophy}
+%This means we require trust in providers' ability to adequately handle privacy-sensitive information.
+The strength of encryption schemes can be proven in relation to the hardness of a mathematical problem, but we have no analogous formalism at our disposal with which to gauge consistency in who or what performs these algorithms - let alone enforcing \textit{provable} integrity through formal methods in this black box environment.
+
+%Provided we can achieve perfect data privacy using PETs
+
+%TODO Cite http://cryptome.org/2013/08/callas-snowden.htm
+John Callas quite recently opined on this matter and lucidly identified it to be a deeply philosophical problem - G\"odel's second incompleteness theorem, which states a system cannot be proven consistent from within that very system.
+His response to these problems is then to concede to a system that is simply `good enough'.
+We should therefore construct systems that conform to our specifications and employ an \textit{external} verifier system - this is the best we can do and is also the basic premise of the proposed PETs.
+
 
 %We want to cover either of these two cases:
 
@@ -69,35 +113,59 @@ Literature suggests the as of yet underdeveloped notion of \textit{information-c
 %How cloud providers are being held accountable for the content they host
 
 %\subsection{The dawn of personal cloud storage privacy}
-Cloud providers like MediaFire, 4shared and the former MegaUpload provide a personal storage platform through the web for file sharing and archiving, be it public or private.
-Such services, known as `cyberlockers' have become popular over the past decade or so, to the point where they can be considered ubiquitous.
-The larger of these websites have in fact become so popular that they are in the lead for most visited sites and are among the most significant global internet bandwidth users.
-Sharing services like these are known to be used as trafficking vehicles for pirated copyrighted media as they can provide free storage in a way that in most cases can be used anonymously, and can even generate profit for the uploader.
-One of such companies was the former MegaUpload: a company which had its assets seized by the United States Department of Justice in early 2012 on claims of illegal file sharing activity, in what is still unfolding as a particularly complex legal case.
-The company has since reinvented itself as MEGA, providing the same services but boasting better privacy and security by using cryptographic methods to mask the stored data.
-Following the (foreseen) legal prosecution, other companies like Ciphercloud and SpiderOak have also brought forth solutions to similar concerns.
-While MEGA and SpiderOak seem to have taken a cue from the cryptography community and chose to be open about their design to their users, Ciphercloud have recently become the center of controversy after they tried to file a DMCA takedown notice against a StackExchange thread in which their cryptography scheme was analyzed and its security/trustworthyness became the subject of speculation~\cite{ciphercloud}.
-Given the lack of provided open-source implementations, it still seems the cryptography argument is a bit of a hand-wave.
-We have decided to summarize some issues regarding these new designs in \autoref{sec:technical_analysis}.
+%Cloud providers like MediaFire, 4shared and the former MegaUpload provide a personal storage platform through the web for file sharing and archiving, be it public or private.
+%Such services, known as `cyberlockers' have become popular over the past decade or so, to the point where they can be considered ubiquitous.
+%The larger of these websites have in fact become so popular that they are in the lead for most visited sites and are among the most significant global internet bandwidth users.
+%Sharing services like these are known to be used as trafficking vehicles for pirated copyrighted media as they can provide free storage in a way that in most cases can be used anonymously, and can even generate profit for the uploader.
+
+%One of such companies was the former MegaUpload: a company which had its assets seized by the United States Department of Justice in early 2012 on claims of illegal file sharing activity, in what is still unfolding as a particularly complex legal case.
+%The company has since reinvented itself as MEGA, providing the same services but boasting better privacy and security by using cryptographic methods to mask the stored data.
+%Following the (foreseen) legal prosecution, other companies like Ciphercloud and SpiderOak have also brought forth solutions to similar concerns.
+%While MEGA and SpiderOak seem to have taken a cue from the cryptography community and chose to be open about their design to their users, Ciphercloud have recently become the center of controversy after they tried to file a DMCA takedown notice against a StackExchange thread in which their cryptography scheme was analyzed and its security/trustworthyness became the subject of speculation~\cite{ciphercloud}.
+%Given the lack of provided open-source implementations, it still seems the cryptography argument is a bit of a hand-wave.
+%We have decided to summarize some issues regarding these new designs in \autoref{sec:technical_analysis}.
 
 
 \section{Legal analysis}
 \label{sec:legal_analysis}
 
-In this section we will review the relevant legal aspects surrounding cloud computing. We shall focus on the European legal framework since it is the most extensive.
+In this section we will review the relevant legal aspects surrounding cloud computing.
+We will focus on the European legal framework (and our local Dutch adaptation) since it best fits our own perspective, but moreover because appears to be the most thorough legislation with regards to legal privacy guarantees.
+This perspective is directly contrasted by the American framework, which seems to take a more conservative stance, providing more legal foothold for law enforcement and intelligence agencies to investigate.
 
-The key legislature is the EU Data Protection Directive 95/46/EC, which provides basic rights to consumers' data by obligating data collectors to uphold their right to privacy. \cite{directive199595}
-This directive is based on seven key principles surrounding citizen privacy.
-They are as follows:
-\begin{itemize}
-\item Data subjects should be given notice of collection;
-\item Data should only be used for the purposes specified;
-\item Data should not be disclosed without the subject's consent;
-\item The data processors should uphold adequate security;
-\item It should be disclosed to data subjects who is processing their information;
-\item Data subjects should be allowed to access and update their data;
-\item It should be possible to hold data collectors accountable to these principles.
-\end{itemize}
+\subsection{Legal Code}
+The Council of Europe has recognized the right to privacy as a human right from its inception, and as such has included a obligation to uphold this right in its European Convention on Human Rights (ECHR) which was signed by \emph{all} of its member states.
+ECHR Article 8, ``Right to respect for private and family life'', gives a broad definition of the right to privacy which has been upheld by the European Court of Human Rights in a broad interpretation.
+
+In the same vein the EU Data Protection Directive 95/46/EC grants EU citizens the right to keep their personal data private, full stop.
+\cite{directive199595}
+The default principle of the law is that personal data should not be processed \textit{at all}, except when explicit requirements are met.
+
+%in telecommunications networks by forbidding service providers from intruding on their personal information without having received explicit permission in advance.
+
+
+%Local legislature that applies is the \textit{Wet Bescherming Persoonsgegevens} (WBP)
+% TODO
+
+\subsection{What is Covered}
+Personal data is again defined very broadly, as:
+\begin{quote}
+... any information relating to an identified or identifiable natural person ('data subject'); an identifiable person is one who can be identified, directly or indirectly, in particular by reference to an identification number or to one or more factors specific to his physical, physiological, mental, economic, cultural or social identity
+\end{quote}
+
+%This means that permission to collect
+
+%This directive is based on seven key principles surrounding citizen privacy.
+%They are as follows:
+%\begin{itemize}
+%\item Data subjects should be given notice of collection;
+%\item Data should only be used for the purposes specified;
+%\item Data should not be disclosed without the subject's consent;
+%\item The data processors should uphold adequate security;
+%\item It should be disclosed to data subjects who is processing their information;
+%\item Data subjects should be allowed to access and update their data;
+%\item It should be possible to hold data collectors accountable to these principles.
+%\end{itemize}
 
 This legislature is set to be succeeded by the General Data Protection Regulation, which amends the code to extend its reach beyond the EU, and applies everywhere information about EU citizens is collected.
 It also mandates that data breaches must be reported to the Data Protection Authority, and stipulates serious fines for failure to comply.
@@ -112,8 +180,9 @@ The type of cloud system, i.e., ``the X in XaaS'', also has its part to play in 
 From IaaS (infrastructure) to SaaS (software), the responsibilities concerning privacy of provider and client change.
 In an IaaS setting, the provider can only do so much to provide privacy safeguards.
 The responsibilities lie primarily in providing availability of the infrastructure as well as providing hypervisor and physical security.
-The client, however is responsible for building secure applications or platforms on top of this infrastructure.
-In a SaaS setting, the provider needs to provide more guarantees.
+The IaaS client is responsible towards their respective clients for building secure applications or platforms on top of this infrastructure.
+
+The SaaS provider is ultimately accountable.
 That is, a user needs to be sure that the software is adequately secured on infrastructure, platform and software level.
 Obviously, in the PaaS setting the responsibilities lie somewhere halfway between IaaS and SaaS. The provider needs to provide a secure platform but it is the client's job to provide the necessary safeguards for any application built on top of this platform.
 
@@ -137,45 +206,45 @@ Even after the new legislation comes into effect, the PATRIOT act~\cite{mailman2
 
 % Legal responsibilities as a function of the type of cloud architecture (see slides for the idea)
 
-\section{Current State of Affairs: Private Cyberlockers}
-\label{sec:technical_analysis}
-%Security considerations in cloud infrastructure
+%\section{Current State of Affairs: Private Cyberlockers}
+%\label{sec:technical_analysis}
+%%Security considerations in cloud infrastructure
 
-%Summary of techniques for security, focussing on Confidentiality and Integrity as we know them from general computing
+%%Summary of techniques for security, focussing on Confidentiality and Integrity as we know them from general computing
 
-%\subsection{Hypervisor security}
-%``Reflections on Trusting Trust'' by Kevin Thompson \cite{thompson1984reflections}
+%%\subsection{Hypervisor security}
+%%``Reflections on Trusting Trust'' by Kevin Thompson \cite{thompson1984reflections}
 
-%Hardware backdoors \cite{sparks2009chipset, duflot2010limits}
+%%Hardware backdoors \cite{sparks2009chipset, duflot2010limits}
 
-%Reverse engineering requirement
-%\cite{rutkowska2008bluepilling}
-%In this section we shall provide a cursory review of the current state of affairs in technical solutions as implemented, or to be implemented, by some of the cloud storage providers out there.
+%%Reverse engineering requirement
+%%\cite{rutkowska2008bluepilling}
+%%In this section we shall provide a cursory review of the current state of affairs in technical solutions as implemented, or to be implemented, by some of the cloud storage providers out there.
 
-%\subsection{Case study: private cyberlocker}
-%\label{sec:cyberlocker}
-%How MEGA/Megaupload tried to cover themselves (and to a lesser extent their users) from the burden of accountability for the data they host
-%
-%Our ideas to keep private data private in cloud storage without sacrificing de-duplication
-%(subject to further experimentation)
-Following the disturbance in the cyberlocker ecosystem following the seizure of MegaUpload there has been growing interest in secure private cyberlocker services.
-This seems like a win-win situation for privacy: the cyberlocker sites have plausible deniability with respect to the content they are hosting, and their users can feel secure about their data privacy.
-We must ask ourselves why there is no true openness from any such providers of note to be found in the literature or when surfing the web. \cite{borgmann2012security}
-We have, however, tried to find out what we can from public sources about two newcomers to the scene.
+%%\subsection{Case study: private cyberlocker}
+%%\label{sec:cyberlocker}
+%%How MEGA/Megaupload tried to cover themselves (and to a lesser extent their users) from the burden of accountability for the data they host
+%%
+%%Our ideas to keep private data private in cloud storage without sacrificing de-duplication
+%%(subject to further experimentation)
+%Following the disturbance in the cyberlocker ecosystem following the seizure of MegaUpload there has been growing interest in secure private cyberlocker services.
+%This seems like a win-win situation for privacy: the cyberlocker sites have plausible deniability with respect to the content they are hosting, and their users can feel secure about their data privacy.
+%We must ask ourselves why there is no true openness from any such providers of note to be found in the literature or when surfing the web. \cite{borgmann2012security}
+%We have, however, tried to find out what we can from public sources about two newcomers to the scene.
 
-%In the market of so-called `cyberlocker' sites most don't use (or boast) any privacy enhancing technologies, and  those that do are not always open about their workings.
-MEGA and SpiderOak are both open about the fact that they make use of a layered approach whereby files are encrypted with strong random passwords, which are then encrypted by a single master password associated with the user.
-Assuming the underlying cipher and random generation algorithms are implemented in a cryptographically secure way such a scheme seems quite secure: neither the files nor their keys ever reach the server in the plain.
-Their approaches diverge when it comes to application delivery: where MEGA opted for in-browser delivery of content over the HTTPS channel SpiderOak chose to draft a native application for its service to better ensure application integrity (as it runs in a separate context).
+%%In the market of so-called `cyberlocker' sites most don't use (or boast) any privacy enhancing technologies, and  those that do are not always open about their workings.
+%MEGA and SpiderOak are both open about the fact that they make use of a layered approach whereby files are encrypted with strong random passwords, which are then encrypted by a single master password associated with the user.
+%Assuming the underlying cipher and random generation algorithms are implemented in a cryptographically secure way such a scheme seems quite secure: neither the files nor their keys ever reach the server in the plain.
+%Their approaches diverge when it comes to application delivery: where MEGA opted for in-browser delivery of content over the HTTPS channel SpiderOak chose to draft a native application for its service to better ensure application integrity (as it runs in a separate context).
 
-The SpiderOak client so far remains a closed-source application, but at least its code and behaviour can be audited and validated using traditional means.
-Compare this to MEGAs due to their choice of the web browser as a code delivery environment, which is much more tamper-prone due to its intended malleability by add-ons.
-An adversary that could manage to infect our browser through a malicious add-on (which is more likely to happen than infecting the host) would be able to intercept and modify our entire interaction with the MEGA service.
+%The SpiderOak client so far remains a closed-source application, but at least its code and behaviour can be audited and validated using traditional means.
+%Compare this to MEGAs due to their choice of the web browser as a code delivery environment, which is much more tamper-prone due to its intended malleability by add-ons.
+%An adversary that could manage to infect our browser through a malicious add-on (which is more likely to happen than infecting the host) would be able to intercept and modify our entire interaction with the MEGA service.
 
-Both of these services offer de-duplication, but SpiderOak makes sure to point out it does not do so across users because they apply \textit{personal encryption} to each file.
-As we understand it, this also describes MEGAs scheme: neither can do secure de-duplication across users without linking users to content, and therefore avoid doing so.
+%Both of these services offer de-duplication, but SpiderOak makes sure to point out it does not do so across users because they apply \textit{personal encryption} to each file.
+%As we understand it, this also describes MEGAs scheme: neither can do secure de-duplication across users without linking users to content, and therefore avoid doing so.
 
-But if MEGA truly has no idea of what users upload to their service, how should we read the headline ``Kim Dotcom Pulls 3D Printed Gun Plans from MEGA''~\cite{3d_gun}.
+%But if MEGA truly has no idea of what users upload to their service, how should we read the headline ``Kim Dotcom Pulls 3D Printed Gun Plans from MEGA''~\cite{3d_gun}.
 
 %\subsection{Past attacks}
 %Past security vulnerabilities (that threaten privacy)
@@ -183,6 +252,14 @@ But if MEGA truly has no idea of what users upload to their service, how should 
 
 \section{Privacy-Enhancing Technologies}
 \label{sec:pet}
+
+Literature suggests a few alternatives to placing trust in a single third party, such as:
+\begin{itemize}
+\item \textit{server-aided cryptography}, where a third party server does some `heavy lifting' for its clients without having access to their secrets;
+\item the as of yet underdeveloped notion of \textit{information-centric security}, where data is self-describing and self-defending, regardless of the context; \cite{chow2009controlling}
+\item establishing trust by \textit{consensus} among a number of peers;
+\item the still-developing field of \textit{Fully Homomorphic Encryption}, which would allow computations to be applied to data that \textit{remains under encryption}.
+\end{itemize}
 
 Certain recent technologies provide ways to interface with cloud services with some measure of privacy.
 Two of these privacy-enhancing technologies are \emph{search under encryption} and \emph{reusable garbled secrets through functional encryption}.
@@ -258,6 +335,7 @@ another might provide some consistency check of the underlying plaintext data;
 yet another may generate statistics over some collection of encrypted data.
 
 \section{Conclusion}
+\label{sec:conclusion}
 
 Cloud computing is still becoming increasingly more popular and thus making sure we ``do it right'' becomes more important as well.
 In this paper we have attempted to provide an overview of the problems, both legal and technical, surrounding privacy and cloud computing as well as an overview of the current situation with modern cloud providers.
