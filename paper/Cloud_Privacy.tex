@@ -1,4 +1,4 @@
-\documentclass[12pt]{article}
+\documentclass[11pt, a4paper]{article}
 \usepackage{enumitem}
 \usepackage{listings}
 \usepackage{color}
@@ -9,10 +9,15 @@
 \usepackage{sidecap}
 \usepackage{epstopdf}
 
+\usepackage{amsmath}
+\usepackage{amsfonts}
+
 %\def\bibfont{\scriptsize}
 
 \usepackage{natbib}
 \setlength{\bibsep}{0.0pt}
+
+\newcommand{\op}[1]{\operatorname{#1}}
 
 \begin{document}
 \title{Privacy in Cloud Computing}
@@ -22,7 +27,7 @@
 \date{\today}
 \maketitle
 
-\abstract{We summarize our concerns for observed and potential privacy risks associated with cloud computing in a broad sense, subsequently review the legal aspects concerning data protection from a European perspective, followed by a summary of two related and applicable privacy-enhancing technologies uncovered in our literature study, and conclude by reflecting on the state of affairs.}
+\abstract{We summarize our concerns for observed and potential privacy risks associated with cloud computing in a broad sense, subsequently review the legal aspects concerning data protection from a European perspective, followed by a summary of three related and applicable privacy-enhancing technologies uncovered in our literature study, and conclude by reflecting on the state of affairs.}
 % TODO rewrite...
 
 \section{Introduction}
@@ -331,45 +336,113 @@ Our worries surrounding illegal wiretapping makes the more general, commercial s
 What good is a strong system of privacy when it can be circumvented not only by member states of the European Council, but also the ostensibly most powerful intelligence agencies on the planet could permit itself to dive into our data.
 The legal protection we enjoy is a nice-to-have, but in light of these concerns we must enforce our privacy by technical means if we take the adversary seriously.
 
-%We would like to note that when applying the sort of the solutions we describe in \autoref{sec:pet} we process significantly less personal data.
 Say, for instance, that we have a situation in which we want to search in a database.
 Now, if we apply techniques to search using encrypted queries in an encrypted database, we stop processing any personal data that is not linked to the communications protocol (like IP addresses). Such techniques, are in a way a win-win solution. They reduce liability risks for providers and provide privacy for users.
 
+Legal solutions as we studied in the previous section do not actually solve our biggest problem. 
+They do not aid us in protecting our data, and thus our privacy, from potentially malicious third parties. 
+What we need are systems that give guarantees about the privacy of our data even in a setting with a hostile third party. 
+The most obvious, and probably even the only, solution is to make sure that even the cloud provider cannot, by any interal means, access the data. 
+If the cloud provider cannot do so, we also prevent mass privacy violations by parties using the cloud providers access, whether they be governmental or criminal in nature. 
+In this section we shall attempt to describe a few ways in which to accomplish this to some degree for some applications. 
+In particular we shall discuss searchable encryption (SE), fully homomorphic encryption (FHE) and functional encryption (FE).
+Note that we shall not attempt to describe any given concept with the greatest level of (mathematical) detail, instead we shall focus on supplying the definitions and the intuition required for understanding how we can use these technologies to aid in our endeavour to make clouding computing more friendly to our privacy.
 
-Literature suggests a few alternatives to placing trust in a single third party, such as:
-\begin{itemize}
-\item \textit{server-aided cryptography}, where a third party server does some `heavy lifting' for its clients without having access to their secrets;
-\item the as of yet underdeveloped notion of \textit{information-centric security}, where data is self-describing and self-defending, regardless of the context; \cite{chow2009controlling}
-\item establishing trust by \textit{consensus} among a number of peers;
-\item the still-developing field of \textit{Fully Homomorphic Encryption}, which would allow computations to be applied to data that \textit{remains under encryption}.
-\end{itemize}
+Before we discuss the mentioned technologies it is import to note that the application of cryptography to provide privacy may not be generally feasible in a cloud setting. 
+Van Dijk and Juels~\cite{van2010impossibility} formally defined a class hierarchy for cloud applications and went on to prove that for two out of three, even powerful primitives such as fully homomorphic encryption, are not enough to provide privacy. 
+They considered three classes of cloud applications, namely
 
-Certain recent technologies provide ways to interface with cloud services with some measure of privacy.
-Two of these privacy-enhancing technologies are \emph{search under encryption} and \emph{reusable garbled secrets through functional encryption}.
-Both come from the realm of cryptography and it should be noted that it is likely that encryption is never enough to provide privacy in the general case of cloud applications \cite{van2010impossibility}.
-However, we feel that these two technologies can help in protecting the privacy of the user of cloud services.
+\begin{enumerate}
+    \item Private single-client computing, computation on data of a client such that only this client can learn the output;
+    \item Private multi-client computing, computation on data of multiple clients such that the output may be selectively learned only by certain clients using some form of access control;
+    \item Stateful multi-client computing, similar to private multi-client computing except that the access control policy depends on previous application execution.
+\end{enumerate}
+
+Note that this last class actually contains a great many typical cloud applications, e.g., social networks. 
+Therefore the result that neither the second nor the third class actually realizes privacy in the general sense is quite important; some form of trusted state or execution is always required in those two classes.
+We do feel, however, that even in the face of such a result the study of the techniques in the next few sections is worthwhile and useful because they can provide privacy in specific applications and use cases.
+In a sense, the result is also quite reassuring, i.e., as long as data need not be shared among clients it is indeed very possible to get privacy using more general methods like FHE.
+
+% Literature suggests a few alternatives to placing trust in a single third party, such as:
+% \begin{itemize}
+% \item \textit{server-aided cryptography}, where a third party server does some `heavy lifting' for its clients without having access to their secrets;
+% \item the as of yet underdeveloped notion of \textit{information-centric security}, where data is self-describing and self-defending, regardless of the context; \cite{chow2009controlling}
+% \item establishing trust by \textit{consensus} among a number of peers;
+% \item the still-developing field of \textit{Fully Homomorphic Encryption}, which would allow computations to be applied to data that \textit{remains under encryption}.
+% \end{itemize}
+
+% Certain recent technologies provide ways to interface with cloud services with some measure of privacy.
+% Two of these privacy-enhancing technologies are \emph{search under encryption} and \emph{reusable garbled secrets through functional encryption}.
+% Both come from the realm of cryptography and it should be noted that it is likely that encryption is never enough to provide privacy in the general case of cloud applications \cite{van2010impossibility}.
+% However, we feel that these two technologies can help in protecting the privacy of the user of cloud services.
 
 \subsection{Searchable Encryption}
 
-One application of particular interest in cloud computing setting is that of search.
-It is not hard to imagine that, in a world where we store more and more data in the cloud, we would like good, secure and safe ways to search through said data.
+One application of particular interest in a cloud computing setting is that of searching through data.
+It is not hard to imagine that, in a world where we store more and more data in the cloud, we would like good and secure ways to search through said data.
 However, we may not trust the cloud provider with knowing what we are searching for nor what sort of data is stored.
 Enter searchable encryption, a scheme where both the stored data and the queries are kept secret.
-In this section, we shall describe a fairly simple system of searchable encryption as devised by Boneh \cite{boneh2004public} called Public-Key Encryption with Keyword Search (PEKS).
+In this section, we shall first describe a fairly simple system of searchable encryption as devised by Boneh~\cite{boneh2004public} called Public-Key Encryption with Keyword Search (PEKS).
 
-Conceptually, PEKS is very simple:
-Say people send Alice messages that are stored in some database.
-These messages are constructed as follows:
-given an encrypted message $msg$ containing words $w \in msg$, append to the encryption of $msg$ the PEKS encryptions of $w$ under the public key of the Alice.
-The PEKS encryption works by having a separate keypair for each word $w$, the total of all of the public keys form the final public key of Alice, and the total of the private keys  from the final private key in the same manner. The encryption then returns a tuple containing some random value $M$ and the encryption of $M$ under the private key corresponding to $w$.
-Finally, if Alice wants to query the message database, she constructs a trapdoor which is simply the private key corresponding with the word $w$ the wants to query for.
-An algorithm that tests for the existence of the keyword gets such a tuple and a trapdoor and attempts to decrypt the second part of the tuple using the trapdoor until the decryption matches the first element of the tuple.
-If this happens for a word belonging to a message, the message contains the word. 
-In this, slightly simplified, version of the scheme, we cannot guarantee chosen-ciphertext security although modified versions may actually provide such a guarantee.
-Also, performance is quite bad due to the massive amounts of public key operations (and even generation) going on in this scheme.
+Boneh describes the system in specific, but easily generalizable, setting, i.e., the routing of encrypted e-mail messages depending on the occurrence of certain keywords in this message. 
+The goal is to test whether a keyword occurs in a message without learning any other information about the message.
+Note that such a goal can conceivably be achieved using the functional encryption scheme that we shall later discuss but we do not necessarily need the full power of such a scheme for this relatively simple goal. This scenario, when storing the encrypted mail on an IMAP server, is analogous to a cloud provider storing such messages.
 
-Note that Boneh would go on to provide some better solutions in \cite{boneh2007public}, but we shall not discuss those here.
-Also, research has been done \cite{li2010fuzzy} on providing fuzzy keyword searching, i.e., when searching for ``foo'' we actually want to search for all keywords corresponding to ``*f*o*o*'', where * is the wildcard character.
+The scheme is, conceptually at least, not very complicated. Let us say $B$ wants to send $A$ an encrypted message using the PEKS scheme. The message would look like this:
+\[
+    \left[ E_{A_{pub}}(m), \op{PEKS}(A_{pub}, W_1), \dots, \op{PEKS}(A_{pub}, W_k) \right]
+\]
+where $A_{pub}$ is $A$'s public key, $m$ is the message $E_k(m)$ is the encryption of $m$ under $k$, PEKS is the algorithm that provides searchable encryption and $W_1, \dots, W_k$ are the keywords associated with $m$.
+
+For the scheme to work we need the following four algorithms:
+\begin{itemize}
+    \item $\op{KeyGen}(s)$: Generates public/private keypair $(A_{pub}, A_{priv})$ given security parameter $s$;
+    \item $\op{PEKS}(A_{pub},W)$: Given the public key and a word $W$, provide a searchable encryption of $W$;
+    \item $\op{Trapdoor}(A_{priv},W)$: Produce a trapdoor for $W$ given the private key and a word $W$;
+    \item $\op{Test}(A_{pub},S,T_W)$: Given the public key, a searchable encryption $S = \op{PEKS}(A_{pub}, W')$ and the trapdoor $T = \op{Trapdoor}(A_{priv}, W)$, test whether $W = W'$ and output 'yes' or 'no' accordingly.
+\end{itemize}
+
+A query would then consist of sending a trapdoor of a message to the server and this server could then, given the existence of the Test algorithm, return all messages containing this keyword.
+Boneh notes that this scheme, as is, is semantically secure against an adaptive chosen keyword attack but not against a chosen ciphertext attack.
+It can, however, be adapted to provide such a guarantee.
+
+It turns out that we can construct these four algorithms using any trapdoor permutation (other constructions are given, but we shall forego those). 
+We need two guarantees: a polynomially bounded number of keywords and an encryption system that is source-indistinguishable, i.e., it is computationally hard to determine with which key a given ciphertext was encrypted with. 
+In order to now construct the PEKS system we need to define the four algorithms in terms suitable to this particular construction, i.e., with trapdoor permutations and source-indistinguishability. 
+The algorithm can be constructed as follows, where $\Sigma$ is the family of keywords, polynomial in size:
+\begin{itemize}
+    \item $\op{KeyGen}$: Generate a public/private keypair $PK_W/Priv_W$ for each $W \in \Sigma$. The resulting public key $A_{pub}$ is $A_{pub} = \{ PK_W | W \in Sigma \}$;
+    \item $\op{PEKS}(A_{pub},W)$: Output $\op{PEKS}(A_{pub}, W) = (M, E_{PK_W}(M))$ for a randomly picked $M = {0,1}^s$;
+    \item $\op{Trapdoor}(A_{priv},W)$: Simply output $T_W = Priv_W$;
+    \item $\op{Test}(A_{pub},S,T_W)$: Test whether the decryption $D_{T_W}(S) = 0^s$ and output 'yes' or 'no' accordingly.
+\end{itemize}
+
+While this construction is very simple and generic in its application, we can do much better in terms of efficiency. 
+The fact that (seemingly) we require a very, very large public key is a detriment to the applicability of this scheme.
+However, if we use a more specific construction (or a more optimized version of the above) we can avoid this problem.
+In fact, in the very same paper Boneh explains a construction based on hash functions and bilinear maps that is much more efficient.
+
+Concerning searchable encryption, we can definitely see applications for such a system. 
+Given that it should be more efficient than, say, FHE we can probably use such a system for doing keyword searches in cloud-stored documents. 
+Note that this is a particular version of searchable encryption, for other situations we may want more specialized schemes, especially if we want to do complicated queries.
+Also, such a scheme as this exposes the access pattern of the user requesting the search, i.e., the provider may not learn the content of the messages but it can learn which messages are frequently accessed and so forth.
+A solution to this problem is given by Boneh in~\cite{boneh2007public}.
+In fact, Li~\cite{li2010fuzzy} argues that the fact that this scheme only provides exact-keyword search makes it unsuitable for cloud computing. 
+They go on to propose a system for doing fuzzy searches. This is, although quite a bit more fancy, necessarily more complex as well.
+
+% Conceptually, PEKS is very simple:
+% Say people send Alice messages that are stored in some database.
+% These messages are constructed as follows:
+% given an encrypted message $msg$ containing words $w \in msg$, append to the encryption of $msg$ the PEKS encryptions of $w$ under the public key of the Alice.
+% The PEKS encryption works by having a separate keypair for each word $w$, the total of all of the public keys form the final public key of Alice, and the total of the private keys  from the final private key in the same manner. The encryption then returns a tuple containing some random value $M$ and the encryption of $M$ under the private key corresponding to $w$.
+% Finally, if Alice wants to query the message database, she constructs a trapdoor which is simply the private key corresponding with the word $w$ the wants to query for.
+% An algorithm that tests for the existence of the keyword gets such a tuple and a trapdoor and attempts to decrypt the second part of the tuple using the trapdoor until the decryption matches the first element of the tuple.
+% If this happens for a word belonging to a message, the message contains the word. 
+% In this, slightly simplified, version of the scheme, we cannot guarantee chosen-ciphertext security although modified versions may actually provide such a guarantee.
+% Also, performance is quite bad due to the massive amounts of public key operations (and even generation) going on in this scheme.
+
+% Note that Boneh would go on to provide some better solutions in \cite{boneh2007public}, but we shall not discuss those here.
+% Also, research has been done \cite{li2010fuzzy} on providing fuzzy keyword searching, i.e., when searching for ``foo'' we actually want to search for all keywords corresponding to ``*f*o*o*'', where * is the wildcard character.
 
 
 % Only store encrypted data, Let clients perform crypto so it can be validated externally
@@ -378,54 +451,186 @@ Also, research has been done \cite{li2010fuzzy} on providing fuzzy keyword searc
 % Homomorphic encryption,
 % Searching in encrypted data \cite{harrower2009searching, li2010fuzzy}
 
-\subsection{Reusable Garbled Circuits}
+\subsection{Fully Homomorphic Encryption}
 
-Goldwasser \cite{goldwasser2013reusable} recently provided the means to reuse so-called garbled circuits by means of a functional encryption scheme using \emph{succinct} functions.
-This allows the computation of succinct functions on encrypted data without learning anything but the result of the function.
-To reuse Goldwasser's example, this allows us to, say, compute a spam-detection function on encrypted mail that learns nothing about the contents of said mail except whether it was classified as spam.
-We shall not go into the details of the security properties of this system but we shall attempt to indicate how they work.
+We feel comfortable saying that fully homomorphic encryption (FHE) is one of the more interesting and promising advances in cryptography of the last decade. 
+It allows for performing complex dynamically-chosen computations on data while said data remains encrypted. 
+In the context of cloud computing, FHE is especially interesting.
+Take, for instance, one of the services a cloud provider might provide, namely the outsourcing of computational power.
+Using the ability to compute arbitrary functions over encrypted data allows one to use such external computation power without exposing what is being computed (and which data is used).
+It is important to note that at the time of writing efficient ways to implement an FHE scheme do not yet exist in any practical sense.
+However, progress is being made in this area.
 
-Essentially, a garbled circuit allows computation of a given function $f(x)$ without leaking information about $f$ or $x$.
-The only information learned is the output, $f(x)$.
-More precisely, we have a circuit $C$ that computes the respective function given input $x$.
-We garble the circuit by encoding it using some one-way function, this outputs the garbled circuit $C'$ and a secret key $sk$.
-The input $x$ is also encoded in order to fit the newly generated circuit.
-These circuits basically need to provide two things: the privacy of $x$ and the privacy of $C$ (input privacy and circuit privacy, respectively).
-Historically, such a garbled circuit was for one-time use only, new input required new encodings.
-What Goldwasser did is to provide a way to, with only one key and thus one encoding, apply the circuit to a polynomial number of inputs.
+The first properly working construction of FHE is due to Gentry~\cite{gentry2009fully} in 2009, which also construed a blueprint of sorts for building a FHE system.
+A full, precise explanation of FHE as per Gentry's construction, or any of the later ones is truly outside the scope of this particular paper. 
+Instead, we refer the reader to~\cite{vaikuntanathan2011computing} for a more complete, but not to in-depth, overview of FHE and to~\cite{brakerski2012leveled} for a fairly recent construction of FHE that is not directly based on Gentry's original blueprint but on the (Ring) Learning with Errors problem. 
+What we shall do is to provide a more general overview of what FHE entails and what its properties generally are. 
+For the sake of consistency with the next section we shall use the definitions and notation from~\cite{goldwasser2013reusable}, which are in turn adapted from~\cite{vaikuntanathan2011computing}.
 
-As stated, in order to reuse such circuits we need a function encryption (FE) scheme.
-In such a scheme, we have a master public key $mpk$ that anyone can encrypt data with.
-Furthermore, the data owner can issue keys for functions that given a key $sk_f$ and ciphertext $c$ corresponding to input $x$ can compute $f(x)$ on $c$ using $sk_f$.
-In this case we rely on homomorphic encryption to make sure that we can actually compute on encrypted data in a semantically secure way.
+We can define FHE scheme as a quadruple of polynomial time algorithms $(\op{FHE.KeyGen}, \op{FHE.Enc}, \op{FHE.Dec}, \op{FHE.Eval})$:
 
-Now that the components are laid out, we shall go on to describe, very globally, the workings of Goldwasser's reusable garbled circuits.
-As mentioned, we use fully homomorphic encryption (FHE) in order to compute on encrypted data.
-The security of FHE guarantees no information leaks on the input $x$, therefore providing the input privacy that we need.
-We now use a functional encryption scheme using FHE to compute functions $f$ on given input.
-Still lacking is the ability to provide circuit privacy.
-In Goldwasser's scheme, this is accomplished by garbling circuit $C$ using a semantically secure encryption scheme in combination with said functional encryption scheme.
-This yields the garbled circuit $U$ and a secret key for $U$ such that given $sk$ and $x$, U will decrypt $C$ and yields $C(x)$.
-In this scheme, we can reuse the circuit for a polynomial amount of inputs.
+\begin{enumerate}
+    \item $\op{FHE.KeyGen}(1^k)$: A probabilistic algorithm that given security parameter $k$, outputs public/private keypair $pk/sk$;
+    \item $\op{FHE.Enc}(pk, x \in \{0,1\}$: A probabilistic algorithm that given the public key and an input bit outputs ciphertext $\psi$;
+    \item $\op{FHE.Dec}(sk, \psi)$: A deterministic algorithm that given the secret key and a ciphertext outputs the message $x^* \in \{0,1\}$;
+    \item $\op{FHE.Eval}(pk, C, \psi_1, \psi_2, \dots, \psi_n)$: A deterministic algorithm that given the public key, a circuit taking $n$ bits as input and $n$ ciphertexts, outputs a ciphertext $\psi_C$.
+\end{enumerate}
 
-For a precise definition of the functional encryption scheme used and the reusable garbled circuit that follows we refer the reader to Goldwasser's excellent paper; this section was only intended as a global overview.
+A construction of such a scheme is \emph{homomorphic} if given $\psi = \op{FHE.Eval}(pk, C, \psi_1, \dots, \psi_n)$ the chance that $\op{FHE.Dec}(sk, \psi) \neq C(\psi_1, \dots, \psi_n)$ is negligible. 
+It is \emph{compact} if the output size of $\op{FHE.Eval}$ is at most polynomial in the security parameter $k$.
+The construction is fully homomorphic if for all arithmetic circuits $C$ over $GF(2)$ the scheme is both compact and homomorphic.
 
-Given such a scheme as this, how does it apply to our particular use case?
-In a cloud setting we can think of several services being given keys for functions corresponding to the service they provide.
-All these services could operate on any data encrypted with the master public key, regardless of origin.
-One such service might provide search functionality, as described in the previous section;
-another might provide some consistency check of the underlying plaintext data;
-yet another may generate statistics over some collection of encrypted data.
+The construction in the next section will use a \emph{leveled} FHE scheme. 
+Such a scheme is defined as an FHE scheme where $\op{FHE.KeyGen}$ takes a second parameters $1^d$ and the scheme is fully homomorphic for all $d$-depth arithmetic circuits over $GF(2)$. 
+We suppose, as per~\cite{vaikuntanathan2011computing}, that other types of circuits than arithmetic ones are possible, but for the sake of ease we shall not consider those.
+
+\subsection{Functional Encryption}
+
+In this section we shall discuss a method of constructing a functional encryption (FE) scheme due to Goldwasser~\cite{goldwasser2013reusable}. 
+The scheme is based on fully homomorphic encryption (FHE) and a particular type of attribute-based encryption (ABE).
+Functional encryption allows for the computation of a function $f$ on encrypted data without learning anything about the input data or the function itself, it only learns the output.
+In theory this means that you can give your cloud provider (or some other party) your encrypted data and certain keys that allow for the computation of certain functions.
+To reuse Goldwasser's example, this allows us to, say, compute a spam-detection function on encrypted mail that learns nothing about the contents of said mail except whether it was classified as spam. 
+This spam-detection function can therefore be run by a third party without risk of compromising the contents of the message.
+This particular FE scheme appears to have a great many applications, key among which are reusable garbled circuits and token-based program obfuscation as well as publicly verifiable computation delegation.
+It also manages to solve one of the problems of FHE, which is the fact that anyone with a public key can compute on the encrypted data and get an encrypted result.
+This is, in a sense, both an important feature and an important bug.
+Sometimes we want, like in the spam filter example, to give a third party the ability to decrypt the result.
+For FHE this would entail giving up the entire private key, which may not be what one wants.
+FE solves this by giving a key for a specific purpose (or function) to this service, thereby opening up new possibilities.
+This, in theory, allows for complex data access policies determined by the client of a cloud service.
+Note again, however, that for now the reliance on FHE of this scheme makes for a very inefficient system and it, as of yet, not feasible to implement.
+
+As stated, we have need of three ingredients to make this particular functional encryption scheme work: FHE, a specific variant of ABE and a traditional Yao garbling scheme.
+In particular we shall use the leveled FHE scheme, which we already defined,  and a something the authors call two-outcome ABE.
+The garbled circuit will be explained after the explanation for the ABE.
+
+The difference with a normal ABE and a two-outcome ABE is simple, where we normally encrypt only one message with an attribute and a key, now we encrypt two messages at once.
+The decryption than outputs the first message if the attribute evaluates to 0 and the second if it evaluates to 1.
+We shall see a more formal definition shortly.
+In general terms, however, ABE is a scheme that manages the encoding of an access policy into the encryption and decryption.
+
+Given a class of predicates $\mathcal{P}$ defined by circuits with $n$-bit input and a message space $M$ we can define the two-outcome ABE using four algorithms:
+\begin{enumerate}
+    \item $\op{ABE.Setup}(1^k)$: Given the security parameter, output public/private master keys $fmpk/fmsk$;
+    \item $\op{ABE.KeyGen}(fmsk, P)$: Given the master secret key and a predicate $P \in \mathcal{P}$, output a predicate key $fsk_P$ pertaining to $P$;
+    \item $\op{ABE.Enc}(fmpk, x, M_0, M_1)$: Given the master public key, an attribute and two messages, output the ciphertext $c$;
+    \item $\op{ABE.Dec}(fsk_P, c)$: Given the predicate key and the ciphertext, output $M^* \in M$.
+\end{enumerate}
+Such a scheme is correct if it indeed outputs $\op{ABE.Dec}(fsk_P, c) = M_1$ if $P(x) = 1$ and $M_0$ otherwise.
+
+Now that we have both ABE and FHE we only need to define the Yao garbling scheme. 
+Intuitively, suppose we want to compute $C(x)$, where $C$ is the circuit and $x$ the input we do not wish for information to leak about $C$ or $x$.
+We now encode $C$ using a one-way function in a garbled circuit $\Gamma$ that still computes the same underlying function.
+That is, it does this if we also encode the input to the circuit $x$ as $c$ such that $\Gamma(c) = C(x)$.
+Now we can give this circuit to some third party with some input and they can compute the outcome without learning more than black-box knowledge about the circuit and the input.
+
+More precisely, such a garbling scheme consists of three algorithms for garbling a given family of circuits $\mathcal{C} = \{\mathcal{C}_n\}_{n\in\mathbb{N}}$ where $\mathcal{C}_n$ is a set of boolean circuits taking $n$-bit inputs. The algorithms are as follows:
+\begin{enumerate}
+    \item $\op{Gb.Garble}(1^k, C)$: Given the security parameter and a circuit taking $n$-bit inputs, output the secret key $sk$ and the garbled circuit $\Gamma$;
+    \item $\op{Gb.Enc}(sk, x)$: Given the secret key and some input $x \in {0,1}^n$ to the original circuit, output an encoding $c$ of $x$ whose size notably does not rely on the size of $C$;
+    \item $\op{Gb.Eval}(\Gamma, c)$: Given the garbled circuit and an encoded input, output $\Gamma(c)$ for which holds that $\Gamma(c) = C(x)$.
+\end{enumerate}
+
+In the standard Yao construction the secret consists of labels, $sk = \{ L_i^0, L_i^1 \}_{i=1}^n$ and the encoding of $x$ looks like $c = (L_1^{x_1}, \dots, L_n^{x_n})$.
+
+Rejoice, we now have all necessary components to create the functional encryption scheme and all the goodness that comes from it. 
+Recall that in functional encryption we wish to compute $f(x)$ without exposing $f$ or $x$. 
+First of all, we define what a functional encryption scheme looks like.
+Consider the class of function $\mathcal{F} = \{\mathcal{F}_n\}_{n \ in \mathbb{N}}$ as boolean functions with $n$-bit input.
+Given that, an FE scheme consists of the following algorithms:
+\begin{enumerate}
+    \item $\op{FE.Setup}(1^k)$: Given the security parameter, output public/private master keypair $fmpk/fmsk$;
+    \item $\op{FE.KeyGen}(fmsk, f)$: Given the master secret key and a function $f \in \mathcal{F}$ with $n$-bit input, output function key $fsk_f$;
+    \item $\op{FE.Enc}(fmpk, x)$: Given the master public key and an input $x \in \{0,1\}^n$, output ciphertext $c$;
+    \item $\op{FE.Dec}(fsk_f, c)$: Given the function key and a ciphertext, output a value $y$.
+\end{enumerate}
+
+The scheme is correct if, given $c = \op{FE.Enc}(fmpk, x)$, it holds that $\op{FE.Dec}(fsk_f, c) = y = f(x)$ with high probability.
+
+Given the definition, we shall conclude this by also giving the actual construction; which, in fact, is the reason we had to do all these definitions.
+The construction entails describing these last four algorithms and we shall go through them in order. The FE scheme works by outputting one bit at a time, repeating the algorithm allows for more than one bit of output. Let $\lambda = \lambda{k}$, the ciphertext length of the FHE scheme.
+
+\paragraph{Setup}
+
+$\op{FE.Setup}(1^k)$:
+\[
+    (fmpk_i, fmsk_i) \leftarrow \op{ABE.Setup}(1^k), \text{ for } i \in [\lambda]
+\]
+
+Output as public/private master keypair $MPK = (fmpk_1, \dots, fmpk_{\lambda})$ and $MSK = (fmsk_1, \dots, fmsk_{\lambda})$.
+
+\paragraph{Key generation}
+$\op{FE.KeyGen}(MSK, f)$: \\
+Let $hpk$ be a FHE public key and $\psi_1, \dots, psi_n$ the corresponding ciphertexts and $\op{FHE.Eval}_f^i(hpk, \psi_1, \dots, \psi_n)$ is the $i$-th bit of the evaluation of $f$ on $\psi_1, \dots, \psi_n$.
+
+\begin{enumerate}
+    \item
+        \[ fsk_i \gets \op{ABE.KeyGen}(fmsk_i, \op{FHE.Eval}_f^i \text{ for } i \in [\lambda] \]
+
+        Run the ABE key generation for the functions $\op{FHE.Eval}_f^i$ in order to get the secret keys, using different master keys all the time.
+    \item
+        Output $fsk_f = (fsk_1, \dots, fsk_{\lambda})$.
+\end{enumerate}
+
+
+\paragraph{Encryption}
+$\op{FE.Enc}(MPK, x)$:
+
+\begin{enumerate}
+    \item First generate a fresh FHE keypair $(hpk, hsk) \gets \op{FHE.KeyGen}(1^k)$. Then encrypt each bit of $x$: $\psi_i = \op{FHE.Enc}(hpk, x_i)$ and denote all these encryptions as $\psi$.
+    \item 
+        \[
+            \left( \Gamma, \{ L_i^0, L_i^1 \}_{i=1}^{\lambda} \right ) \gets \op{Gb.Garble}(1^k, \op{FHE.Dec}(hsk,\cdot))
+        \]
+        Generate the garbled circuit for the FHE decryption algorithm using $hsk$ as secret key.
+    \item
+        \[
+            c_i \gets \op{ABE.Enc}(fmpk_i, (hpk, \psi), L_i^0, L_i^1) \text{ for } i \in [\lambda]
+        \]
+        Generate ciphertexts by ABE encryption using results of step 1 and 2.
+    \item
+        Output $c = (c_1, \dots, c_{\lambda}, \Gamma)$ as the ciphertext.
+\end{enumerate}
+
+\paragraph{Decryption}
+$\op{FE.Dec}(fsk_f, c)$:
+
+\begin{enumerate}
+    \item
+        \[
+            L_i^{d_i} \gets \op{ABE.Dec}(fsk_i, c_i) \text{ for } i \in [\lambda]
+        \]
+
+        Recover the labels for the garbled circuit using the ABE decryption. In particular, note that $d_i = \op{FHE.Eval}_f^i(hpk, \psi)$.
+    \item
+        \[
+            \op{Gb.Eval}(\Gamma, L_1^{d_1}, \dots, L_{\lambda}^{d_{\lambda}}) = \op{FHE.Dec}(hsk, d_1 d_2 \dots d_{\lambda}) = f(x)
+        \]
+
+        Given the garbled circuit and the necessary labels, run the garbled evaluation function in order to extract $f(x)$, which was our goal all along.
+\end{enumerate}
+
+That is all there is to Goldwasser's construction of a FE scheme using garbled circuits, FHE and ABE. 
+This by itself is, for all the reasons outlined in the beginning of this section, a wonderful achievement. 
+However, he goes to use this FE scheme to construct reusable garbled circuits, something that was not possible until now.
+We should note that these reusable garbled circuits do require the use of a symmetric secret key since the encodings need to be encrypted under said key.
+This is both a curse and a blessing really.
+On the one hand, this is not an issue in normal single-use garbled circuits.
+On the other hand, it allows for what Goldwasser denotes as token-based obfuscation.
+Consider the applicability of given out an obfuscated program with a certain number of tokens representing the input we allow computation on.
 
 \section{Conclusion}
 \label{sec:conclusion}
 
 Cloud computing is still becoming increasingly more popular and thus making sure we ``do it right'' becomes more important as well.
-In this paper we have attempted to provide an overview of the problems, both legal and technical, surrounding privacy and cloud computing as well as an overview of the current situation with modern cloud providers.
-Furthermore, we have described two privacy-enhancing technologies, searchable encryption and reusable garbled circuits.
-The latter being a very generic approach to applying functions to encrypted data, the former being a solution to a specific problem, i.e., searching encrypted data.
-At the time of writing this paper, both solutions are likely infeasible to implement on any serious scale due to the performance issues associated with them.
-However, we can hope that Moore's law in combination with bleeding-edge research can alleviate this pain some time in the future.
+In this paper we have attempted to provide an overview of the problems, both legal and technical, surrounding privacy and cloud computing.
+Furthermore, we have described three privacy-enhancing technologies, searchable encryption, fully homomorphic encryption and functional encryption.
+Searchable encryption was discussed as a way to solve a certain problem, in particular we discussed the PEKS system for keyword search under encryption.
+Fully homomorphic encryption we treated both on its own merits and as a building block for the functional encryption scheme described in the last section. 
+It remains unfortunate that all of these solutions still remain too inefficient for real-life applications.
+Further research will have show whether this is can be remedied or whether we have to wait for Moore's Law to play catch-up.
+That should, in any case, alleviate the pain of the performance issues a little.
 
 On a more personal note, we feel that the legal framework in Europe, especially considering the new and improved data protection regulation, is among the best in the world. We hope that sanity prevails in the face of over 2000 amendments to said regulation.
 
