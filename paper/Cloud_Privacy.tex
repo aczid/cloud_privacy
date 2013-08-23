@@ -136,7 +136,7 @@ We should therefore construct systems that conform to our specifications and emp
 \label{sec:legal_analysis}
 
 In this section we will review the relevant legal aspects surrounding cloud computing.
-We will focus on the European legal framework (and our local Dutch adaptation) since it best fits our own perspective, but moreover because appears to be the most thorough legislation with regards to legal privacy guarantees.
+We will focus on the European legal framework since it best fits our own perspective, but moreover because appears to be the most thorough legislation with regards to legal privacy guarantees.
 This perspective is directly contrasted by the American framework, which promotes self-regulation and seems to take a more conservative stance toward privacy by providing more legal foothold for law enforcement and intelligence agencies to investigate.
 
 In a cloud computing setting, the main legal problems boil down to two issues: accountability of non-EU companies and multi-tenancy of cloud applications.
@@ -163,7 +163,7 @@ The definition of private data is broad, the directive states clearly that the n
 
 A key provision in the directive is that personal data may not be transferred to `third countries', which do not have compatible legislature that uphold the same standard of privacy.
 This feature is problematic in transnational business relationships between companies in member states and those in such third countries.
-This is of course directly applicable to e-commerce in general, and the cloud computing paradigm particular.
+This is of course directly applicable to e-commerce in general, and the cloud computing paradigm, where dividing lines are more blurred, in particular.
 
 %The type of cloud system, i.e., ``the X in XaaS'', also has its part to play in the legal setting of cloud computing.
 From infrastructure to software, the responsibilities concerning privacy of provider and client change.
@@ -171,7 +171,7 @@ In an IaaS setting, the provider can (and is legally obligated to) only do so mu
 These responsibilities lie primarily in providing availability of the infrastructure as well as providing hypervisor and physical security, although IaaS providers do not consider security features a competitive advantage.
 The IaaS provider's client who becomes a data controller is the one responsible towards their respective clients for building secure applications or platforms on top of this infrastructure under European law.
 
-The data controller provider is ultimately accountable.
+The data controller is ultimately accountable.
 %That is, a user needs to be sure that the software is adequately secured on infrastructure, platform and software level.
 In the PaaS setting the responsibilities lie somewhere halfway between IaaS and SaaS - the provider needs to provide a secure platform but it is the client's job to provide the necessary safeguards for any application built on top of this platform.
 
@@ -180,7 +180,7 @@ The Article 29 Working Party, an advisory body composed of members of the local 
 Therefore they recommend that their clients (data controllers) should select a provider which can guarantee compliance with the data protection legislation.
 They also recommend cloud customers to do an extensive risk analysis before they commit to a cloud provider which exposes them to more (legal or technical) risks than they are prepared for.
 
-IaaS market leader Amazon has committed to this idea by allowing its customers to `lock' their cloud storage systems to operate only within European borders and thereby safeguard the data under European law.
+IaaS market leader Amazon has committed to this idea by allowing its customers to restrict their cloud storage systems to operate only within European borders and thereby safeguard the data under European law.
 Microsoft has expressed they are unable to provide any guarantees for this, and opine that any other company could not do so either.
 The large American communication companies we are concerned about operate as U.S. companies and are not prepared to keep data locked to our region. Therefore our European rights are not transitive to their systems under current legislation.
 
@@ -188,14 +188,14 @@ The large American communication companies we are concerned about operate as U.S
 Complementary to the Data Protection Directive is the E-privacy Directive (Directive on Privacy and Electronic Communications), which does not override but augments the Data Protection Directive, by additionally obliging member states to protect the privacy of both natural and legal persons in electronic communications.
 The main obligation to providers is to provide adequate security and to inform users of security breaches, but it also covers things like excessive data retention, spam e-mail and the use of tracking cookies without explicit consent.
 This last provision has spawned controversy as it is deemed to be unenforceable in practice.
-Some of their most vocal critics are a group of developers who have created an open source solution to implement a system to use cookies that is in accordance with the directive.
-Since the interpretation of the law has changed over time, their software has become largely irrelevant and prompted them to start the campaign \url{nocookielaw.com}.
+Some of the most vocal critics are a group of developers who have created an open source solution to implement a system to use cookies that is in accordance with the directive.
+Since the interpretation of the law has changed over time, their software has become largely irrelevant and this prompted them to start the campaign \url{nocookielaw.com}.
 %This document spawned the much-debated ``Cookie law'' (Cookiewet) in the Netherlands.
 
 
 %\subsection{United States of America Law}
 \subsection{Safe Harbor in the United States of America}
-The United States Department of Commerce has worked with the EU to adapt the Data Protection Directive principles into what is called the ``Safe Harbor'' principles which US companies can opt-in to.
+The United States Department of Commerce has worked with the EU to adapt the Data Protection Directive principles into what is called the ``Safe Harbor'' principles which US companies can opt in to.
 This essentially allowed US companies to do business with the EU, which has the more stringent data protection legislation.
 This is merely a commercial incentive, not law.
 Companies providing safe harbor facilities are expected to be self-regulating in this regard.
@@ -225,16 +225,16 @@ This is because in stead of relying on probable cause, the applicant (the U.S. g
 
 %In 2008 the next amendment, ``FISA Amendment Act'' was passed and in 2012 it was extended for another 5 years.
 %Herein \textit{resident} U.S. citizens are more strongly protected, the telecommunication companies are granted immunity for their cooperation, warrantless detailed descriptions of
-Over the course of 2006 to 2012 this law has been repeatedly amended to: relieve restrictions on surveillance of overseas entities even if they are U.S. citizens, to generally provide greater legal surveillance and/or `acquisition' \footnote{
+Over the course of 2006 to 2012 this law has been repeatedly amended; to: relieve restrictions on surveillance of overseas entities even if they are U.S. citizens, to generally provide greater legal surveillance and/or `acquisition' \footnote{
 Actually it seems some legal acrobatics are employed; here `acquisition' means something different from surveillance, as it relates to communications with at least one party outside their national borders.
 }
 capability, extend surveillance to more types of electronic communications, provide procedures to direct and/or compel providers to provide assistance, granting said providers immunity from lawsuits, to provide the government retroactive immunity for (emergency) warrantless surveillance, extend the period and ease the procedure with which to make the aforementioned warrantless wiretapping legal, and allows the government to legally certify its own surveillance programs.
 We're not sure if that is everything related to FISA, but it should give an idea of the reach of this shady branch of government.
 
-Earlier this year an anonymous source, allegedly from within the dutch intelligence service AIVD, was interviewed by the newspaper Telegraaf on the subject of the NSA's blanket surveillance. He confided in them the fact that 1) there are more such programs still unpublicised, 2) the gathered information is accessible to Dutch agents as part of their international cooperation, 3) information inside companies that are unwilling to cooperate can be subversively attained by `activating' embedded agents within these companies, 4) the full rap sheet of any target of surveillance can be made available to the agent via e-mail within the course of several minutes.
+Earlier this year an anonymous source, allegedly from within the dutch intelligence service AIVD, was interviewed by the newspaper Telegraaf on the subject of the NSA's blanket surveillance. He confided in them the fact that 1) there are more such programs still unpublicised, 2) the gathered information is accessible to Dutch agents as part of their international cooperation, 3) information inside companies that are unwilling to cooperate can be subversively obtained by `activating' embedded agents within these companies, 4) the full rap sheet of any target of surveillance can be made available to the agent via e-mail within the course of several minutes.
 
 Our initial concern for the strength our European laws give was already heightened when we noted the provisions that let member states loosen some of the obligations in light of national security matters.
-We still have faith in judicial oversight on this side of the Atlantic ocean, most such intrusive AIVD surveillance tasks require a public prosecutor or magistrate to be held accountable.
+We still have faith in judicial oversight on this side of the Atlantic ocean, most such intrusive AIVD surveillance tasks require a public prosecutor or magistrate to be publicly accountable.
 From this new point of view it seems like the all the required oversight can be circumvented entirely if the agents simply ask their helpful overseas colleagues.
 This thread of the story \textit{demands} further investigation.
 % TODO cite http://www.telegraaf.nl/digitaal/21638965/__Ook_AIVD_bespiedt_online__.html
@@ -266,8 +266,8 @@ This thread of the story \textit{demands} further investigation.
 \subsection{Looking ahead}
 
 %Also, the Digital Millennium Copyright Act (DMCA) recognizes the concept of a ``mere conduit'' (of information) as did the European Data Protection Directive. \cite{congress1998digital}
-It should be noted that, currently, the protections the EU legislation provides do not extend beyond its borders.
-This Data Protection Directive is set to be succeeded by the General Data Protection Regulation, which amends the code to extend its reach beyond the EU, and applies everywhere information about EU citizens is collected.
+It should be noted that, currently, the protections the European legislation provides do not extend beyond its borders.
+This Data Protection Directive is set to be succeeded by the General Data Protection Regulation, which amends the code to extend its reach beyond the European borders, and applies everywhere information about European citizens is collected.
 It also mandates that data breaches must be reported to the Data Protection Authority, and stipulates serious fines for failure to comply.
 Note, however, that this regulation is still under review and thus subject to change.
 
@@ -334,7 +334,7 @@ Note, however, that this regulation is still under review and thus subject to ch
 \label{sec:pet}
 
 Our worries surrounding illegal wiretapping makes the more general, commercial side of our legal considerations seem somewhat moot.
-What good is a strong system of privacy when it can be circumvented not only by member states of the European Council, but also the ostensibly most powerful intelligence agencies on the planet could permit itself to dive into our data.
+What good is a strong system of privacy when it can be circumvented not only by member states of the European Council, but also the ostensibly most powerful intelligence apparatus on the planet could permit itself to dive into our data.
 The legal protection we enjoy is a nice-to-have, but in light of these concerns we must enforce our privacy by technical means if we take the adversary seriously.
 
 Say, for instance, that we have a situation in which we want to search in a database.
@@ -346,7 +346,7 @@ If the cloud provider cannot do so, we also prevent mass privacy violations by p
 In this section we shall attempt to describe a few ways in which to accomplish this to some degree for some applications.
 In particular we shall discuss searchable encryption (SE), fully homomorphic encryption (FHE) and functional encryption (FE).
 The first we discuss as a somewhat older, but still very applicable system. The second we discuss on its own merits but also as a building block for the third PET, i.e., functional encryption.
-Note that we shall not attempt to describe any given concept with the greatest level of (mathematical) detail, instead we shall focus on supplying the definitions and the intuition required for understanding how we can use these technologies to aid in our endeavour to make clouding computing more friendly to our privacy. We will, however, be the most extensive on the subject of functional encryption since there have some nice developments in that area over the last half year or so.
+Note that we shall not attempt to describe any given concept with the greatest level of (mathematical) detail, instead we shall focus on supplying the definitions and the intuition required for understanding how we can use these technologies to aid in our endeavour to make cloud computing more privacy-friendly. We will, however, be the most extensive on the subject of functional encryption since there have been some nice developments in that area over the past half year or so.
 
 Before we discuss the aforementioned technologies it is import to note that the application of cryptography to provide privacy may not be generally feasible in a cloud setting.
 Van Dijk and Juels~\cite{van2010impossibility} formally defined a class hierarchy for cloud applications and went on to prove that for two out of three, even powerful primitives such as fully homomorphic encryption, are not enough to provide privacy.
@@ -424,8 +424,8 @@ In fact, in the very same paper Boneh explains a construction based on hash func
 
 Concerning searchable encryption, we can definitely see applications for such a system.
 Given that it should be more efficient than, say, FHE we can probably use such a system for doing keyword searches in cloud-stored documents.
-Note that this is a particular version of searchable encryption, for other situations we may want more specialized schemes, especially if we want to do complicated queries.
-Also, such a scheme as this exposes the access pattern of the user requesting the search, i.e., the provider may not learn the content of the messages but it can learn which messages are frequently accessed and so forth.
+Note that this is a particular version of searchable encryption; for other situations we may want more specialized schemes, especially if we want to do complicated queries.
+Also, a scheme such as this exposes the access pattern of the user requesting the search, i.e., the provider may not learn the content of the messages but it can learn which messages are frequently accessed and so forth.
 A solution to this problem is given by Boneh in~\cite{boneh2007public}.
 In fact, Li~\cite{li2010fuzzy} argues that the fact that this scheme only provides exact-keyword search makes it unsuitable for cloud computing.
 They go on to propose a system for doing fuzzy searches. This is, although quite a bit more fancy, necessarily more complex as well.
@@ -461,9 +461,9 @@ Using the ability to compute arbitrary functions over encrypted data allows one 
 It is important to note that at the time of writing efficient ways to implement an FHE scheme do not yet exist in any practical sense.
 However, progress is being made in this area.
 
-The first properly working construction of FHE is due to Gentry~\cite{gentry2009fully} in 2009, which also construed a blueprint of sorts for building a FHE system.
+The first properly working construction of FHE is attributed to Gentry~\cite{gentry2009fully}, who also construed a blueprint of sorts for building a FHE system.
 A full, precise explanation of FHE as per Gentry's construction, or any of the later ones is truly outside the scope of this particular paper.
-Instead, we refer the reader to~\cite{vaikuntanathan2011computing} for a more complete, but not to in-depth, overview of FHE and to~\cite{brakerski2012leveled} for a fairly recent construction of FHE that is not directly based on Gentry's original blueprint but on the (Ring) Learning with Errors problem.
+Instead, we refer the reader to~\cite{vaikuntanathan2011computing} for a more complete, but not too in-depth, overview of FHE and to~\cite{brakerski2012leveled} for a fairly recent construction of FHE that is not directly based on Gentry's original blueprint but on the (Ring) Learning with Errors problem.
 What we shall do is to provide a more general overview of what FHE entails and what its properties generally are.
 For the sake of consistency with the next section we shall use the definitions and notation from~\cite{goldwasser2013reusable}, which are in turn adapted from~\cite{vaikuntanathan2011computing}.
 
