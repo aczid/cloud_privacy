@@ -525,7 +525,7 @@ Given a class of predicates $\mathcal{P}$ defined by circuits with $n$-bit input
 Such a scheme is correct if it indeed outputs $\op{ABE.Dec}(fsk_P, c) = M_1$ if $P(x) = 1$ and $M_0$ otherwise.
 
 Now that we have both ABE and FHE we only need to define the Yao garbling scheme.
-Intuitively, suppose we want to compute $C(x)$, where $C$ is the circuit and $x$ the input we do not wish for information to leak about $C$ or $x$.
+Intuitively, suppose we want to compute $C(x)$, where $C$ is the circuit and $x$ the input and we do not wish for information to leak about $C$ or $x$.
 We now encode $C$ using a one-way function in a garbled circuit $\Gamma$ that still computes the same underlying function.
 That is, it does this if we also encode the input to the circuit $x$ as $c$ such that $\Gamma(c) = C(x)$.
 Now we can give this circuit to some third party with some input and they can compute the outcome without learning more than black-box knowledge about the circuit and the input.
