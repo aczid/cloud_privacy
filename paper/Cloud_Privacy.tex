@@ -1,4 +1,4 @@
-\documentclass[11pt]{article}
+\documentclass[10pt]{article}
 \usepackage{enumitem}
 \usepackage{listings}
 \usepackage{color}
@@ -10,6 +10,7 @@
 \usepackage{epstopdf}
 
 \usepackage{amsmath}
+\usepackage{amsfonts}
 
 %\def\bibfont{\scriptsize}
 
@@ -394,52 +395,149 @@ We can define FHE scheme as a quadruple of polynomial time algorithms $(\op{FHE.
     \item $\op{FHE.Eval}(pk, C, \psi_1, \psi_2, \dots, \psi_n)$: A deterministic algorithm that given the public key, a circuit taking $n$ bits as input and $n$ ciphertexts, outputs a ciphertext $\psi_C$.
 \end{enumerate}
 
-A construction of such a scheme is \emph{homomorphic} if given $\psi = \op{FHE.Eval}(pk, C, \psi_1, \dots, \psi_n)$ the chance that $\op{FHE.Dec}(sk, \psi) \neq C(\psi_1, \dots, \psi_n)$. 
+A construction of such a scheme is \emph{homomorphic} if given $\psi = \op{FHE.Eval}(pk, C, \psi_1, \dots, \psi_n)$ the chance that $\op{FHE.Dec}(sk, \psi) \neq C(\psi_1, \dots, \psi_n)$ is negligible. 
 It is \emph{compact} if the output size of $\op{FHE.Eval}$ is at most polynomial in the security parameter $k$.
 The construction is fully homomorphic if for all arithmetic circuits $C$ over $GF(2)$ the scheme is both compact and homomorphic.
 
-The construction in the next chapter will use a \emph{leveled} FHE scheme. 
+The construction in the next section will use a \emph{leveled} FHE scheme. 
 Such a scheme is defined as an FHE scheme where $\op{FHE.KeyGen}$ takes a second parameters $1^d$ and the scheme is fully homomorphic for all $d$-depth arithmetic circuits over $GF(2)$. 
 We suppose, as per~\cite{vaikuntanathan2011computing}, that other types of circuits than arithmetic ones are possible, but for the sake of ease we shall not consider those.
 
-\subsection{Reusable Garbled Circuits}
+\subsection{Functional Encryption}
 
-Goldwasser \cite{goldwasser2013reusable} recently provided the means to reuse so-called garbled circuits by means of a functional encryption scheme using \emph{succinct} functions.
-This allows the computation of succinct functions on encrypted data without learning anything but the result of the function.
-To reuse Goldwasser's example, this allows us to, say, compute a spam-detection function on encrypted mail that learns nothing about the contents of said mail except whether it was classified as spam.
-We shall not go into the details of the security properties of this system but we shall attempt to indicate how they work.
+In this section we shall discuss a method of constructing a functional encryption (FE) scheme due to Goldwasser~\cite{goldwasser2013reusable}. 
+The scheme is based on fully homomorphic encryption (FHE) and a particular type of attribute-based encryption (ABE).
+Functional encryption allows for the computation of a function $f$ on encrypted data without learning anything about the input data or the function itself, it only learns the output.
+In theory this means that you can give your cloud provider (or some other party) your encrypted data and certain keys that allow for the computation of certain functions.
+To reuse Goldwasser's example, this allows us to, say, compute a spam-detection function on encrypted mail that learns nothing about the contents of said mail except whether it was classified as spam. 
+This spam-detection function can therefore be run by a third party without risk of compromising the contents of the message.
+This particular FE scheme appears to have a great many applications, key among which are reusable garbled circuits and token-based program obfuscation as well as publicly verifiable computation delegation.
+It also manages to solve one of the problems of FHE, which is the fact that anyone with a public key can compute on the encrypted data and get an encrypted result.
+This is, in a sense, both an important feature and an important bug.
+Sometimes we want, like in the spam filter example, to give a third party the ability to decrypt the result.
+For FHE this would entail giving up the entire private key, which may not be what one wants.
+FE solves this by giving a key for a specific purpose (or function) to this service, thereby opening up new possibilities.
+This, in theory, allows for complex data access policies determined by the client of a cloud service.
+Note again, however, that for now the reliance on FHE of this scheme makes for a very inefficient system and it, as of yet, not feasible to implement.
 
-Essentially, a garbled circuit allows computation of a given function $f(x)$ without leaking information about $f$ or $x$.
-The only information learned is the output, $f(x)$.
-More precisely, we have a circuit $C$ that computes the respective function given input $x$.
-We garble the circuit by encoding it using some one-way function, this outputs the garbled circuit $C'$ and a secret key $sk$.
-The input $x$ is also encoded in order to fit the newly generated circuit.
-These circuits basically need to provide two things: the privacy of $x$ and the privacy of $C$ (input privacy and circuit privacy, respectively).
-Historically, such a garbled circuit was for one-time use only, new input required new encodings.
-What Goldwasser did is to provide a way to, with only one key and thus one encoding, apply the circuit to a polynomial number of inputs.
+As stated, we have need of three ingredients to make this particular functional encryption scheme work: FHE, a specific variant of ABE and a traditional Yao garbling scheme.
+In particular we shall use the leveled FHE scheme, which we already defined,  and a something the authors call two-outcome ABE.
+The garbled circuit will be explained after the explanation for the ABE.
 
-As stated, in order to reuse such circuits we need a function encryption (FE) scheme.
-In such a scheme, we have a master public key $mpk$ that anyone can encrypt data with.
-Furthermore, the data owner can issue keys for functions that given a key $sk_f$ and ciphertext $c$ corresponding to input $x$ can compute $f(x)$ on $c$ using $sk_f$.
-In this case we rely on homomorphic encryption to make sure that we can actually compute on encrypted data in a semantically secure way.
+The difference with a normal ABE and a two-outcome ABE is simple, where we normally encrypt only one message with an attribute and a key, now we encrypt two messages at once.
+The decryption than outputs the first message if the attribute evaluates to 0 and the second if it evaluates to 1.
+We shall see a more formal definition shortly.
+In general terms, however, ABE is a scheme that manages the encoding of an access policy into the encryption and decryption.
 
-Now that the components are laid out, we shall go on to describe, very globally, the workings of Goldwasser's reusable garbled circuits.
-As mentioned, we use fully homomorphic encryption (FHE) in order to compute on encrypted data.
-The security of FHE guarantees no information leaks on the input $x$, therefore providing the input privacy that we need.
-We now use a functional encryption scheme using FHE to compute functions $f$ on given input.
-Still lacking is the ability to provide circuit privacy.
-In Goldwasser's scheme, this is accomplished by garbling circuit $C$ using a semantically secure encryption scheme in combination with said functional encryption scheme.
-This yields the garbled circuit $U$ and a secret key for $U$ such that given $sk$ and $x$, U will decrypt $C$ and yields $C(x)$.
-In this scheme, we can reuse the circuit for a polynomial amount of inputs.
+Given a class of predicates $\mathcal{P}$ defined by circuits with $n$-bit input and a message space $M$ we can define the two-outcome ABE using four algorithms:
+\begin{enumerate}
+    \item $\op{ABE.Setup}(1^k)$: Given the security parameter, output public/private master keys $fmpk/fmsk$;
+    \item $\op{ABE.KeyGen}(fmsk, P)$: Given the master secret key and a predicate $P \in \mathcal{P}$, output a predicate key $fsk_P$ pertaining to $P$;
+    \item $\op{ABE.Enc}(fmpk, x, M_0, M_1)$: Given the master public key, an attribute and two messages, output the ciphertext $c$;
+    \item $\op{ABE.Dec}(fsk_P, c)$: Given the predicate key and the ciphertext, output $M^* \in M$.
+\end{enumerate}
+Such a scheme is correct if it indeed outputs $\op{ABE.Dec}(fsk_P, c) = M_1$ if $P(x) = 1$ and $M_0$ otherwise.
 
-For a precise definition of the functional encryption scheme used and the reusable garbled circuit that follows we refer the reader to Goldwasser's excellent paper; this section was only intended as a global overview.
+Now that we have both ABE and FHE we only need to define the Yao garbling scheme. 
+Intuitively, suppose we want to compute $C(x)$, where $C$ is the circuit and $x$ the input we do not wish for information to leak about $C$ or $x$.
+We now encode $C$ using a one-way function in a garbled circuit $\Gamma$ that still computes the same underlying function.
+That is, it does this if we also encode the input to the circuit $x$ as $c$ such that $\Gamma(c) = C(x)$.
+Now we can give this circuit to some third party with some input and they can compute the outcome without learning more than black-box knowledge about the circuit and the input.
 
-Given such a scheme as this, how does it apply to our particular use case?
-In a cloud setting we can think of several services being given keys for functions corresponding to the service they provide.
-All these services could operate on any data encrypted with the master public key, regardless of origin.
-One such service might provide search functionality, as described in the previous section;
-another might provide some consistency check of the underlying plaintext data;
-yet another may generate statistics over some collection of encrypted data.
+More precisely, such a garbling scheme consists of three algorithms for garbling a given family of circuits $\mathcal{C} = \{\mathcal{C}_n\}_{n\in\mathbb{N}}$ where $\mathcal{C}_n$ is a set of boolean circuits taking $n$-bit inputs. The algorithms are as follows:
+\begin{enumerate}
+    \item $\op{Gb.Garble}(1^k, C)$: Given the security parameter and a circuit taking $n$-bit inputs, output the secret key $sk$ and the garbled circuit $\Gamma$;
+    \item $\op{Gb.Enc}(sk, x)$: Given the secret key and some input $x \in {0,1}^n$ to the original circuit, output an encoding $c$ of $x$ whose size notably does not rely on the size of $C$;
+    \item $\op{Gb.Eval}(\Gamma, c)$: Given the garbled circuit and an encoded input, output $\Gamma(c)$ for which holds that $\Gamma(c) = C(x)$.
+\end{enumerate}
+
+In the standard Yao construction the secret consists of labels, $sk = \{ L_i^0, L_i^1 \}_{i=1}^n$ and the encoding of $x$ looks like $c = (L_1^{x_1}, \dots, L_n^{x_n})$.
+
+Rejoice, we now have all necessary components to create the functional encryption scheme and all the goodness that comes from it. 
+Recall that in functional encryption we wish to compute $f(x)$ without exposing $f$ or $x$. 
+First of all, we define what a functional encryption scheme looks like.
+Consider the class of function $\mathcal{F} = \{\mathcal{F}_n\}_{n \ in \mathbb{N}}$ as boolean functions with $n$-bit input.
+Given that, an FE scheme consists of the following algorithms:
+\begin{enumerate}
+    \item $\op{FE.Setup}(1^k)$: Given the security parameter, output public/private master keypair $fmpk/fmsk$;
+    \item $\op{FE.KeyGen}(fmsk, f)$: Given the master secret key and a function $f \in \mathcal{F}$ with $n$-bit input, output function key $fsk_f$;
+    \item $\op{FE.Enc}(fmpk, x)$: Given the master public key and an input $x \in \{0,1\}^n$, output ciphertext $c$;
+    \item $\op{FE.Dec}(fsk_f, c)$: Given the function key and a ciphertext, output a value $y$.
+\end{enumerate}
+
+The scheme is correct if, given $c = \op{FE.Enc}(fmpk, x)$, it holds that $\op{FE.Dec}(fsk_f, c) = y = f(x)$ with high probability.
+
+Given the definition, we shall conclude this by also giving the actual construction; which, in fact, is the reason we had to do all these definitions.
+The construction entails describing these last four algorithms and we shall go through them in order. The FE scheme works by outputting one bit at a time, repeating the algorithm allows for more than one bit of output. Let $\lambda = \lambda{k}$, the ciphertext length of the FHE scheme.
+
+\paragraph{Setup}
+
+$\op{FE.Setup}(1^k)$:
+\[
+    (fmpk_i, fmsk_i) \leftarrow \op{ABE.Setup}(1^k), \text{ for } i \in [\lambda]
+\]
+
+Output as public/private master keypair $MPK = (fmpk_1, \dots, fmpk_{\lambda})$ and $MSK = (fmsk_1, \dots, fmsk_{\lambda})$.
+
+\paragraph{Key generation}
+$\op{FE.KeyGen}(MSK, f)$: \\
+Let $hpk$ be a FHE public key and $\psi_1, \dots, psi_n$ the corresponding ciphertexts and $\op{FHE.Eval}_f^i(hpk, \psi_1, \dots, \psi_n)$ is the $i$-th bit of the evaluation of $f$ on $\psi_1, \dots, \psi_n$.
+
+\begin{enumerate}
+    \item
+        \[ fsk_i \gets \op{ABE.KeyGen}(fmsk_i, \op{FHE.Eval}_f^i \text{ for } i \in [\lambda] \]
+
+        Run the ABE key generation for the functions $\op{FHE.Eval}_f^i$ in order to get the secret keys, using different master keys all the time.
+    \item
+        Output $fsk_f = (fsk_1, \dots, fsk_{\lambda})$.
+\end{enumerate}
+
+
+\paragraph{Encryption}
+$\op{FE.Enc}(MPK, x)$:
+
+\begin{enumerate}
+    \item First generate a fresh FHE keypair $(hpk, hsk) \gets \op{FHE.KeyGen}(1^k)$. Then encrypt each bit of $x$: $\psi_i = \op{FHE.Enc}(hpk, x_i)$ and denote all these encryptions as $\psi$.
+    \item 
+        \[
+            \left( \Gamma, \{ L_i^0, L_i^1 \}_{i=1}^{\lambda} \right ) \gets \op{Gb.Garble}(1^k, \op{FHE.Dec}(hsk,\cdot))
+        \]
+        Generate the garbled circuit for the FHE decryption algorithm using $hsk$ as secret key.
+    \item
+        \[
+            c_i \gets \op{ABE.Enc}(fmpk_i, (hpk, \psi), L_i^0, L_i^1) \text{ for } i \in [\lambda]
+        \]
+        Generate ciphertexts by ABE encryption using results of step 1 and 2.
+    \item
+        Output $c = (c_1, \dots, c_{\lambda}, \Gamma)$ as the ciphertext.
+\end{enumerate}
+
+\paragraph{Decryption}
+$\op{FE.Dec}(fsk_f, c)$:
+
+\begin{enumerate}
+    \item
+        \[
+            L_i^{d_i} \gets \op{ABE.Dec}(fsk_i, c_i) \text{ for } i \in [\lambda]
+        \]
+
+        Recover the labels for the garbled circuit using the ABE decryption. In particular, note that $d_i = \op{FHE.Eval}_f^i(hpk, \psi)$.
+    \item
+        \[
+            \op{Gb.Eval}(\Gamma, L_1^{d_1}, \dots, L_{\lambda}^{d_{\lambda}}) = \op{FHE.Dec}(hsk, d_1 d_2 \dots d_{\lambda}) = f(x)
+        \]
+
+        Given the garbled circuit and the necessary labels, run the garbled evaluation function in order to extract $f(x)$, which was our goal all along.
+\end{enumerate}
+
+That is all there is to Goldwasser's construction of a FE scheme using garbled circuits, FHE and ABE. 
+This by itself is, for all the reasons outlined in the beginning of this section, a wonderful achievement. 
+However, he goes to use this FE scheme to construct reusable garbled circuits, something that was not possible until now.
+We should note that these reusable garbled circuits do require the use of a symmetric secret key since the encodings need to be encrypted under said key.
+This is both a curse and a blessing really.
+On the one hand, this is not an issue in normal single-use garbled circuits.
+On the other hand, it allows for what Goldwasser denotes as token-based obfuscation.
+Consider the applicability of given out an obfuscated program with a certain number of tokens representing the input we allow computation on.
 
 \section{Conclusion}
 \label{sec:conclusion}
